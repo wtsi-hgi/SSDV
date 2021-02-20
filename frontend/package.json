@@ -1,0 +1,51 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@react-pdf-viewer/thumbnail": "^2.3.2",
+    "@react-pdf/renderer": "^1.6.13",
+    "axios": "^0.21.1",
+    "css-loader": "^5.0.1",
+    "d3-request": "^1.0.6",
+    "file-loader": "^6.2.0",
+    "img-loader": "^3.0.2",
+    "path": "^0.12.7",
+    "pdf-viewer-reactjs": "^2.2.2",
+    "prop-types": "^15.7.2",
+    "react-bootstrap": "^1.4.3",
+    "react-csv-to-table": "0.0.4",
+    "react-file-previewer": "^0.6.3",
+    "react-pdf": "^5.1.0",
+    "react-pdf-preview": "^1.0.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "style-loader": "^2.0.0",
+    "worker-loader": "^3.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@types/node": "^14.14.22",
+    "babel-loader": "^8.2.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0"
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch --entry ./src/index.js --output-path ./static/frontend",
+    "build": "webpack --mode production --entry ./src/index.js --output-path ./static/frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

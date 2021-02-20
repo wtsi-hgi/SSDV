@@ -1,0 +1,25 @@
+version: "3.3"
+   
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/home/ubuntu/tmp_test/pgdata/data
+    env_file: .env    
+  web:
+    build: .
+    image: mercury/scrna_web_browser:0.12
+    command: bash -c "python manage.py makemigrations && python manage.py migrate &&  python manage.py runserver 0.0.0.0:8081"
+    ports:
+      - "8081:8081"
+    depends_on:
+      
+      - db
+    env_file: .env
+
+
+
+volumes:
+  postgres-data:
+
