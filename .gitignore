@@ -7,6 +7,5 @@ browserApp/migrations/__pycache__
 browserApp/migrations/__pycache__
 frontend/__pycache__
 backend/__pycache__
-.env
 env.sh
 app_test
