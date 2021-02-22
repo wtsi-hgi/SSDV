@@ -58,7 +58,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
 
     for file_entity in all_files:
         
-        print(file_entity)
+        
         path_to_delete = instance.__dict__[file_entity]
         if instance.__dict__[file_entity]!='':
             if dateformat.format(instance.timestamp,'Y-m-d H:i:s'):  
@@ -70,42 +70,16 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
                     shutil.rmtree(path3)
                 except:
                     _="this error happens if pertial delete happened before (ie- files deleted from serer but not database)"
-
-
                 # check if the project directory is empty, if it is then remove it
                 path_propagation = path3.split("/")
                 for i in range(len(path_propagation), 2, -1):
                     path_project='/'.join(path_propagation)
-                    print(path_project)
+                    
                     path_propagation.pop()
                     try:
                         os.rmdir(path_project)
                     except:
                         _ = "dir not empty"
                 break
-        
-        # except:
-        #     _ = "None File entity, hence we skip"
+
            
-
-
-
-# @receiver(models.signals.pre_save, sender=fileModel)
-# def auto_delete_file_on_change(sender, instance, **kwargs):
-#     """
-#     Deletes old file from filesystem
-#     when corresponding `MediaFile` object is updated
-#     with new file.
-#     """
-#     if not instance.pk:
-#         return False
-
-#     try:
-#         old_file = fileModel.objects.get(pk=instance.pk).file
-#     except fileModel.DoesNotExist:
-#         return False
-
-#     new_file = instance.file
-#     if not old_file == new_file:
-#         if os.path.isfile(old_file.path):
-#             os.remove(old_file.path)

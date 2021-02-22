@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
-        'HOST': 'db',
+        'HOST': 'scrna_db',
         'PASSWORD': os.getenv('POSTGRES_PASSWORD')
     }
 }

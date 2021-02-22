@@ -9,7 +9,7 @@ COPY /frontend/ /app/frontend/
 COPY manage.py /app/
 COPY /backend/ /app/backend/
 COPY /browserApp/ /app/browserApp/
-COPY /media/ /app/media/
+
 COPY .env /app/
 RUN export $(grep -v '^#' .env| xargs)
 RUN rm /app/.env

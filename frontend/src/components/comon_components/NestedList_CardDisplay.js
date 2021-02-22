@@ -32,7 +32,7 @@ export class NestedList_CardDisplay extends Component {
                         } else {
                             return (
                                 <Grid item xs={6} sm={3}>
-                                    <h3>Metadata PDF <a title={"Here we have used the Metadata PDF file to quickly visualise the most important statistics of the files to be used in the subsequent pipeline."}><InfoIcon /></a></h3>
+                                    <h3>{file}<a title={"Here we have used the Metadata PDF file to quickly visualise the most important statistics of the files to be used in the subsequent pipeline."}><InfoIcon /></a></h3>
                                     <a href={all_files[file]}><Card variant="outlined" className={'PDF box'} style={{ "width": 220, height: 260, padding: 5 }}>
                                         <Document file={all_files[file]}>
                                             <Page pageNumber={1} width={210} height={210} />
