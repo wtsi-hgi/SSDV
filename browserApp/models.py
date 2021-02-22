@@ -11,7 +11,7 @@ from datetime import datetime
 def UploadedConfigPath(instance, filename):
         timestamp_now=timezone.now()
         formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
-        return os.path.join(instance.project, dateformat.format(datetime.now(), 'Y-m-d H:i:s'), filename)
+        return os.path.join(instance.project,instance.user_grouping,instance.pipeline, dateformat.format(datetime.now(), 'Y-m-d H:i:s'), filename)
 
 # need another model which holds all the uploaded files
 class All_files(models.Model):
@@ -28,9 +28,9 @@ class fileModel(models.Model):
     timestamp = models.DateTimeField(default=datetime.now)
 
     # these are all the files that may be visualised on the frontend.
-    Metadata_PDF = models.FileField(default=None,blank=False, null=False,upload_to=UploadedConfigPath)
-    Metadata_CellCount = models.FileField(default=None,blank=False, null=False,upload_to=UploadedConfigPath)
-    Metadata_CSV = models.FileField(default=None, blank=False, null=False,upload_to=UploadedConfigPath)
+    Metadata_PDF = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
+    Metadata_CellCount = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
+    Metadata_CSV = models.FileField(default=None, blank=True, null=True,upload_to=UploadedConfigPath)
     Deconvolution_File = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
     QC_metrics_JPGs = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
     QC_metrics_PDFs1 = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
@@ -45,23 +45,50 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Users can delete entire project, entire timestamp or different files
     """
     path_to_delete=""
-    try:
-        path_to_delete=instance.Metadata_PDF.path
-    except:
-        path_to_delete=instance.Deconvolution_File.path
+    all_files = ["Metadata_PDF",
+    "Metadata_CellCount",
+    "Metadata_CSV",
+    'Deconvolution_File',
+    'QC_metrics_JPGs',
+    'QC_metrics_PDFs1',
+    'QC_metrics_PDFs2'
+    ]
 
-    if dateformat.format(instance.timestamp,'Y-m-d H:i:s'):  
-        path2 = path_to_delete.split("/")
-        path2.pop()
-        path3='/'.join(path2)
-        shutil.rmtree(path3) 
-        # check if the project directory is empty, if it is then remove it
-        path2.pop()
-        path_project='/'.join(path2)
-        try:
-            os.rmdir(path_project)
-        except:
-            _ = "dir not empty"
+
+
+    for file_entity in all_files:
+        
+        print(file_entity)
+        path_to_delete = instance.__dict__[file_entity]
+        if instance.__dict__[file_entity]!='':
+            if dateformat.format(instance.timestamp,'Y-m-d H:i:s'):  
+                path2 = path_to_delete.split("/")
+                path2.pop()
+                path3=os.getcwd()+'/media/'+'/'.join(path2)
+
+                try:
+                    shutil.rmtree(path3)
+                except:
+                    _="this error happens if pertial delete happened before (ie- files deleted from serer but not database)"
+
+
+                # check if the project directory is empty, if it is then remove it
+                path_propagation = path3.split("/")
+                for i in range(len(path_propagation), 2, -1):
+                    path_project='/'.join(path_propagation)
+                    print(path_project)
+                    path_propagation.pop()
+                    try:
+                        os.rmdir(path_project)
+                    except:
+                        _ = "dir not empty"
+                break
+        
+        # except:
+        #     _ = "None File entity, hence we skip"
+           
+
+
 
 # @receiver(models.signals.pre_save, sender=fileModel)
 # def auto_delete_file_on_change(sender, instance, **kwargs):
