@@ -128,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static_scrna/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 REACT_APP_DIRS = os.path.join('frontend')
 
@@ -136,7 +136,6 @@ STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIRS, 'static'),
 ]
 
-print(STATICFILES_DIRS)
 # Media Settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
