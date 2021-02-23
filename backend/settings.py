@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
-        'HOST': 'scrna_db',
+        'HOST': os.getenv('POSTGRES_HOST'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD')
     }
 }
@@ -127,7 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static_scrna/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_scrna')
 REACT_APP_DIRS = os.path.join('frontend')
 
 STATICFILES_DIRS = [

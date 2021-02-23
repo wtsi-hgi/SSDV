@@ -27,7 +27,7 @@ COPY manage.py /app/
 COPY /backend/ /app/backend/
 COPY /browserApp/ /app/browserApp/
 COPY uwsgi.ini /app/
-ENV UWSGI_INI /app/uwsgi.ini
+ENV UWSGI_INI uwsgi.ini
 COPY .env /app/
 RUN export $(grep -v '^#' .env| xargs)
 RUN rm /app/.env

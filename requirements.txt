@@ -8,3 +8,4 @@ Pillow
 django-cors-headers
 pylint-django
 gunicorn==20.0.4
+uwsgi
