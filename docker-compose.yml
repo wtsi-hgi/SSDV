@@ -9,8 +9,8 @@ services:
     env_file: .env    
   scrna_web:
     build: .
-    image: mercury/scrna_web_browser:0.126
-    command: bash -c "python manage.py makemigrations && python manage.py migrate &&  python manage.py runserver 0.0.0.0:8081"
+    image: mercury/scrna_web_browser:0.127623
+    command: bash -c "python manage.py makemigrations && python manage.py migrate &&  gunicorn backend.wsgi:application --bind 0.0.0.0:8081"
     ports:
       - "8081:8081"
     volumes:
