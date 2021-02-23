@@ -18,22 +18,35 @@ services:
       - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
     env_file: .env    
   scrna_web:
-    build: .
+    build: 
+      context: .
     image: mercury/scrna_web_browser:0.212
     # command: bash -c "python manage.py makemigrations && python manage.py migrate &&  gunicorn backend.wsgi:application --bind 0.0.0.0:8081"
     # command: bash -c "python manage.py makemigrations && python manage.py migrate && uwsgi --http :8081 --module backend.wsgi:application"
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && uwsgi --socket :8081 --master --enable-threads --moduel backend.wsgi"
+    # command: bash -c "python manage.py makemigrations && python manage.py migrate && uwsgi --socket :8081 --master --enable-threads --module backend.wsgi"
     # command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8081"
 
-    ports:
-      - "8081:8081"
+    # ports:
+    #   - "8081:8081"
     volumes:
-      - /Users/mo11/work/app_development/media:/app/media
+      # - /Users/mo11/work/app_development/media:/app/media
       # - static_volume:/app/static_scrna
-    expose: 
-      - "8081"
+      - static_data:/vol/web
+    # expose: 
+    #   - "8081"
     depends_on:
       - scrna_db
     env_file: .env
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "8081:8080"
+    depends_on:
+      - scrna_web
 
 
+volumes:
+  static_data:
