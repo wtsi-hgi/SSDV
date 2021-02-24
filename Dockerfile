@@ -23,8 +23,9 @@ COPY ./app /app
 ENV UWSGI_INI uwsgi.ini
 COPY .env /app/
 COPY ./scripts /scripts
-
+COPY ./uwsgi.ini /uwsgi.ini
 RUN chmod +x /scripts/*
+
 COPY --from=0 /nodebuild/frontend/static/frontend /app/frontend/static/frontend
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static

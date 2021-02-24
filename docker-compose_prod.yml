@@ -14,51 +14,93 @@ services:
     volumes:
       - /Users/mo11/work/app_development/media:/vol/web/media
       - scrna_static_data:/vol/web
+      - api_data:/app
     depends_on:
       - scrna_db
     env_file: .env
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - scrna_static_data:/vol/static
+      - api_data:/app
+    ports:
+      - "80:8080"
+    depends_on:
+      - scrna_web
+
+#   proxy:
+#     image: nginx:latest
+#     volumes:
+#       - scrna_static_data:/vol/static
+#     configs:
+#       - source: nginx_config
+#         target: /etc/nginx/nginx.conf 
+#     ports:
+#       - "80:8080"
+#     depends_on:
+#       - scrna_web
+#     configs:
+#       - source: my_config
+#         target: /etc/nginx/nginx.conf
+#         uid: '103'
+#         gid: '103'
+#         mode: 0440
+# configs:
+#   my_config:
+#     file: ./nginx.conf
+#   my_other_config:
+#     external: true
+
   # proxy:
-  #   build:
-  #     context: ./proxy
+  #   image: nginxinc/nginx-unprivileged:1-alpine
+  #   command: "sudo mkdir -p /vol/static && sudo chmod 755 /vol/static"
   #   volumes:
   #     - scrna_static_data:/vol/static
   #   ports:
   #     - "80:8080"
   #   depends_on:
-  #     - scrna_web
-  nginx:
-    image: nginx 
-    ports: 
-      - "443:443"
-      - "80:8080"
-      - "8000:80"
+  #     - scrna_web 
+  #   configs:
+  #     - source: nginx_config
+  #       target: /etc/nginx/nginx.conf 
+  #     - source: uwsgi_config
+  #       target: /etc/nginx/uwsgi_params  
+  #     - source: nginx_def
+  #       target: /etc/nginx/conf.d/default.conf
+   # nginx:
+  #   image: nginx 
+  #   ports: 
+  #     - "443:443"
+  #     - "80:8080"
+  #     - "8000:80"
 
-    depends_on:
-      - scrna_web
-    #   - gwas-frontend
-    #   - frontend
-    #   - backend
-    #   - weaver
-    #   - login-page
-    #   - nginx-ldap-auth-daemon
-    #   - launcher_backend
-    #   - launcher_frontend
-    configs:
-      - source: nginx_config
-        target: /etc/nginx/nginx.conf 
-      - source: uwsgi_config
-        target: /etc/nginx/uwsgi_params  
-      - source: nginx_def
-        target: /etc/nginx/conf.d/default.conf
-    # command: bash -c "mkdir -p /vol/static && chmod 755 /vol/static"    
+  #   depends_on:
+  #     - scrna_web
+  #   #   - gwas-frontend
+  #   #   - frontend
+  #   #   - backend
+  #   #   - weaver
+  #   #   - login-page
+  #   #   - nginx-ldap-auth-daemon
+  #   #   - launcher_backend
+  #   #   - launcher_frontend
+  #   configs:
+  #     - source: nginx_config
+  #       target: /etc/nginx/nginx.conf 
+  #     - source: uwsgi_config
+  #       target: /etc/nginx/uwsgi_params  
+  #     - source: nginx_def
+  #       target: /etc/nginx/conf.d/default.conf
+  #   # command: bash -c "mkdir -p /vol/static && chmod 755 /vol/static"    
       
-      # - source: ssl_cert
-      #   target: /etc/ssl/certs/apps_hgi_sanger_ac_uk-cert.pem
-      # - source: ssl_key
-      #   target: /etc/ssl/private/apps_hgi_sanger_ac_uk-key.pem
-    # networks: [app]
-    volumes:
-      - scrna_static_data:/vol/static   
+  #     # - source: ssl_cert
+  #     #   target: /etc/ssl/certs/apps_hgi_sanger_ac_uk-cert.pem
+  #     # - source: ssl_key
+  #     #   target: /etc/ssl/private/apps_hgi_sanger_ac_uk-key.pem
+  #   # networks: [app]
+  #   volumes:
+  #     - scrna_static_data:/vol/static   
 
 configs:
   nginx_config:
@@ -74,3 +116,4 @@ configs:
 
 volumes:
   scrna_static_data:
+  api_data:
