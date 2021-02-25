@@ -12,7 +12,7 @@ services:
       context: .
     # image: mercury/scrna_web_browser:0.212
     volumes:
-      - /Users/mo11/work/app_development/media:/vol/web/media
+      # - /Users/mo11/work/app_development/media:/vol/web/media
       - /Users/mo11/work/app_development/static:/vol/web
       - api_data:/app
     depends_on:

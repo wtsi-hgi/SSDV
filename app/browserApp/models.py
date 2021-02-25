@@ -6,7 +6,8 @@ import shutil
 from django.utils import timezone,dateformat
 timestamp_now=timezone.now()
 formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
-from datetime import datetime 
+from datetime import datetime
+from backend.settings import MEDIA_ROOT
 
 def UploadedConfigPath(instance, filename):
         timestamp_now=timezone.now()
@@ -64,8 +65,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             if dateformat.format(instance.timestamp,'Y-m-d H:i:s'):  
                 path2 = path_to_delete.split("/")
                 path2.pop()
-                path3=os.getcwd()+'/media/'+'/'.join(path2)
-
+                path3=MEDIA_ROOT+'/'+'/'.join(path2)
                 try:
                     shutil.rmtree(path3)
                 except:
