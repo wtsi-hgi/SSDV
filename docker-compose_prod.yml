@@ -13,7 +13,7 @@ services:
     # image: mercury/scrna_web_browser:0.212
     volumes:
       - /Users/mo11/work/app_development/media:/vol/web/media
-      - scrna_static_data:/vol/web
+      - /Users/mo11/work/app_development/static:/vol/web
       - api_data:/app
     depends_on:
       - scrna_db
@@ -22,7 +22,7 @@ services:
     build:
       context: ./proxy
     volumes:
-      - scrna_static_data:/vol/static
+      - /Users/mo11/work/app_development/static:/vol/static
       - api_data:/app #this is used for the socker, if using TCP coment it
     ports:
       - "80:8080"

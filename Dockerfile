@@ -22,7 +22,7 @@ RUN pip install -r /requirements.txt
 COPY ./app /app
 # ENV UWSGI_INI uwsgi.ini
 COPY .env /app/
-RUN rm -r /app/frontend
+# RUN rm -r /app/frontend
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
 
