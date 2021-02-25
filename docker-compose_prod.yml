@@ -7,10 +7,10 @@ services:
     volumes:
       - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
     env_file: .env    
-  scrna_web:
+  scrna_web2:
     build: 
       context: .
-    image: mercury/scrna_web_browser:0.212
+    # image: mercury/scrna_web_browser:0.212
     volumes:
       - /Users/mo11/work/app_development/media:/vol/web/media
       - scrna_static_data:/vol/web
@@ -23,11 +23,11 @@ services:
       context: ./proxy
     volumes:
       - scrna_static_data:/vol/static
-      - api_data:/app
+      - api_data:/app #this is used for the socker, if using TCP coment it
     ports:
       - "80:8080"
     depends_on:
-      - scrna_web
+      - scrna_web2
 
 #   proxy:
 #     image: nginx:latest

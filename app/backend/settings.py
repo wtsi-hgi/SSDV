@@ -137,6 +137,4 @@ STATICFILES_DIRS = [
     os.path.join(REACT_APP_DIRS, 'static'),
 ]
 
-# Media Settings
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
+

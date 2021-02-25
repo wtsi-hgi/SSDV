@@ -13,6 +13,7 @@ class App extends Component {
       <Provider store={store}>
         <Fragment>
             <Header/> 
+            <div>test</div>
               <div className={"body_content"}>   
             <DisplayFiles/>
             </div>
