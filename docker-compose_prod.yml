@@ -10,7 +10,7 @@ services:
   scrna_web2:
     build: 
       context: .
-    # image: mercury/scrna_web_browser:0.212
+    image: mercury/scrna_web_browser:0.3
     volumes:
       # - /Users/mo11/work/app_development/media:/vol/web/media
       - /Users/mo11/work/app_development/static:/vol/web
@@ -32,23 +32,24 @@ services:
 #   proxy:
 #     image: nginx:latest
 #     volumes:
-#       - scrna_static_data:/vol/static
+#       - /Users/mo11/work/app_development/static:/vol/static
+#       - api_data:/app #this is used for the socker, if using TCP coment it
 #     configs:
 #       - source: nginx_config
-#         target: /etc/nginx/nginx.conf 
+#         target: /etc/nginx/nginx.conf
 #     ports:
 #       - "80:8080"
 #     depends_on:
-#       - scrna_web
+#       - scrna_web2
 #     configs:
 #       - source: my_config
 #         target: /etc/nginx/nginx.conf
-#         uid: '103'
-#         gid: '103'
-#         mode: 0440
+# #         uid: '103'
+# #         gid: '103'
+# #         mode: 0440
 # configs:
 #   my_config:
-#     file: ./nginx.conf
+#     file: nginx.conf
 #   my_other_config:
 #     external: true
 
