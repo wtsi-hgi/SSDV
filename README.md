@@ -1,5 +1,5 @@
 # scRNA_webBrowser
-This file repo is used to produce a production version of the app - we use uwsgi - (alternitively gunicorn can be used, however we have chosen to use uwsgi as it has many benifits for fast interactions). A multi stage build is utilised to reduce the image size for the production version which. 
+This file repo is used to produce a production version of the Django, Postgres, ReactJS app - we use uwsgi - (alternitively gunicorn can be used, however we have chosen to use uwsgi as it has many benifits for fast interactions). A multi stage build is utilised to reduce the image size for the production version which. 
 
 Currently th app works if using a proxy nginx folder configuration with Dockerfile, however this is not possible for the production setup.
 
