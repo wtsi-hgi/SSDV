@@ -6,86 +6,31 @@ services:
     restart: unless-stopped
     volumes:
       - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
-    env_file: .env    
+    env_file: scrna.env    
   scrna_web2:
     build: 
       context: .
-    image: mercury/scrna_web_browser:0.3
+    # image: mercury/scrna_web_browser:0.31 #enable to tag the image
     volumes:
-      # - /Users/mo11/work/app_development/media:/vol/web/media
       - /Users/mo11/work/app_development/static:/vol/web
-      - api_data:/app
     depends_on:
       - scrna_db
-    env_file: .env
-  proxy:
+    env_file: scrna.env
+    ports:
+      - "3002:8081"
+  proxy: # use this block on openstack for nginx. 
     build:
       context: ./proxy
     volumes:
       - /Users/mo11/work/app_development/static:/vol/static
-      - api_data:/app #this is used for the socker, if using TCP coment it
     ports:
       - "80:8080"
+
+    expose:
+      # - "8081"
+      - '8000'
     depends_on:
       - scrna_web2
-
-#   proxy:
-#     image: nginx:latest
-#     volumes:
-#       - /Users/mo11/work/app_development/static:/vol/static
-#       - api_data:/app #this is used for the socker, if using TCP coment it
-#     configs:
-#       - source: nginx_config
-#         target: /etc/nginx/nginx.conf
-#     ports:
-#       - "80:8080"
-#     depends_on:
-#       - scrna_web2
-#     configs:
-#       - source: my_config
-#         target: /etc/nginx/nginx.conf
-# #         uid: '103'
-# #         gid: '103'
-# #         mode: 0440
-# configs:
-#   my_config:
-#     file: nginx.conf
-#   my_other_config:
-#     external: true
-
-   # nginx:
-  #   image: nginx 
-  #   ports: 
-  #     - "443:443"
-  #     - "80:8080"
-  #     - "8000:80"
-
-  #   depends_on:
-  #     - scrna_web
-  #   #   - gwas-frontend
-  #   #   - frontend
-  #   #   - backend
-  #   #   - weaver
-  #   #   - login-page
-  #   #   - nginx-ldap-auth-daemon
-  #   #   - launcher_backend
-  #   #   - launcher_frontend
-  #   configs:
-  #     - source: nginx_config
-  #       target: /etc/nginx/nginx.conf 
-  #     - source: uwsgi_config
-  #       target: /etc/nginx/uwsgi_params  
-  #     - source: nginx_def
-  #       target: /etc/nginx/conf.d/default.conf
-  #   # command: bash -c "mkdir -p /vol/static && chmod 755 /vol/static"    
-      
-  #     # - source: ssl_cert
-  #     #   target: /etc/ssl/certs/apps_hgi_sanger_ac_uk-cert.pem
-  #     # - source: ssl_key
-  #     #   target: /etc/ssl/private/apps_hgi_sanger_ac_uk-key.pem
-  #   # networks: [app]
-  #   volumes:
-  #     - scrna_static_data:/vol/static   
 
 configs:
   nginx_config:
@@ -94,11 +39,3 @@ configs:
     file: uwsgi_params
   nginx_def:
     file: default.conf
-  #  ssl_cert:
-  #     file: apps_hgi_sanger_ac_uk-cert.pem
-  #  ssl_key:
-  #     file: apps_hgi_sanger_ac_uk-key.pem 
-
-volumes:
-  scrna_static_data:
-  api_data:

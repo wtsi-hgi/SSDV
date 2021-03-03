@@ -5,8 +5,8 @@ FROM node
 
 WORKDIR /nodebuild
 COPY ./app/frontend/ /nodebuild/frontend/
-ADD .env /nodebuild
-RUN export $(grep -v '^#' .env | xargs) 
+ADD scrna.env /nodebuild
+RUN export $(grep -v '^#' scrna.env | xargs) 
 RUN cd frontend &&npm i webpack webpack-cli --save-dev && npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev && npm i react react-dom --save-dev
 RUN cd frontend && npm install
 RUN cd frontend && npm run build
@@ -21,7 +21,7 @@ WORKDIR /app
 RUN pip install -r /requirements.txt
 COPY ./app /app
 # ENV UWSGI_INI uwsgi.ini
-COPY .env /app/
+COPY scrna.env /app/
 # RUN rm -r /app/frontend
 COPY ./scripts /scripts
 RUN chmod +x /scripts/*
