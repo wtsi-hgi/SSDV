@@ -1,5 +1,5 @@
-media
-frontend/node_modules
+app/media
+app/frontend/node_modules
 # frontend/migrations/*_auto_*
 .vscode
 # browserApp/migrations/*_auto_*
@@ -7,5 +7,5 @@ browserApp/migrations/__pycache__
 browserApp/migrations/__pycache__
 frontend/__pycache__
 backend/__pycache__
-env.sh
+scrna.env
 app_test
