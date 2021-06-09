@@ -37,6 +37,8 @@ class fileModel(models.Model):
     QC_metrics_PDFs1 = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
     QC_metrics_PDFs2 = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
 
+
+
 @receiver(models.signals.post_delete, sender=fileModel)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """

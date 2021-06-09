@@ -10,4 +10,5 @@ pylint-django
 # gunicorn==20.0.4
 Django
 uWSGI==2.0.19
+pandas
 # >=2.0.18,<2.1

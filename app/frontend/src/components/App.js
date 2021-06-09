@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Header from "./layout/Header";
 import {Provider} from 'react-redux';
 import store from '../store';
-import DisplayFiles from "./layout/DisplayFiles";
+import Experiment_level from "./layout/Experiment_level";
 import Footer from "./layout/Footer";
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
             <Header/> 
             <div>test</div>
               <div className={"body_content"}>   
-            <DisplayFiles/>
+              <Experiment_level/>
             </div>
             <Footer/>
         </Fragment>

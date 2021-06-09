@@ -130,3 +130,46 @@ body {
 {
   display: none;
 }
+
+.pipeline_button{
+  /* min-width: 200px; */
+  width: 150px;
+  
+  height: 60%;
+  margin: 10px;
+}
+
+#container {
+  width: 100%;
+  min-height: 100px;
+  position: relative;
+
+}
+#navi,
+#infoi {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  float: left;
+  
+}
+#infoi {
+  padding-right: 40px;
+  width: 92%;
+  padding-left: 40px;
+  /* float:left; */
+  gap: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  z-index: 10;
+  overflow-x: scroll;
+}
+
+
+.VisualisationArea{
+  
+  height: 400px;
+  width:100%
+}
