@@ -41,9 +41,23 @@ body {
   text-shadow: 0.1em 0.1em #333;
 
 }
+.nav_bottom{
+  position: absolute;
+  bottom: 0px;
+}
 
-#header{
+
+.NavElement{
+  background-color: whitesmoke;
+}
+
+
+#head{
   background-image: linear-gradient(to right, #9F7FDA , #4965A7);
+  margin: 0em;
+  height: 300px;
+  text-align:center;
+  position: relative;
 }
 
 #delete_button{
@@ -80,7 +94,8 @@ body {
 
 .list-group-collapse
 {
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 
@@ -133,16 +148,29 @@ body {
 
 .pipeline_button{
   /* min-width: 200px; */
-  width: 150px;
+  width: 20%;
   
-  height: 60%;
+  height: auto;
   margin: 10px;
+}
+
+
+
+#child {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 #container {
   width: 100%;
   min-height: 100px;
   position: relative;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0em;
 
 }
 #navi,
@@ -164,12 +192,53 @@ body {
   display: grid;
   grid-auto-flow: column;
   z-index: 10;
+  
+}
+
+
+.overflowdiv {
+  padding-right: 40px;
+  width: 100%;
+  padding-left: 40px;
+  /* float:left; */
+  gap: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  z-index: 10;
+  overflow-y: hidden;
   overflow-x: scroll;
+}
+.overflowTable{
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  font-size: 10px;
+}
+
+.overflowTableCell{
+  max-width: 100px;
+  max-height: 100px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  background:rosybrown;
+  
+}
+
+.title_cards{
+  width: 200px;
+  max-height: 50px;
+  min-height: 50px;
+}
+.button_pipe{
+  width: 4em;
 }
 
 
 .VisualisationArea{
+  height: 330px;
+  width:100%; 
   
-  height: 400px;
-  width:100%
+  overflow-y: scroll;
+  overflow-x: scroll;
+  margin: 1em;
 }
