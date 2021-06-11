@@ -18,7 +18,9 @@ export class Experiment_level extends Component {
     }
 
     render() {
-
+        const change_first_element = (file_link) => {
+            this.setState({ first_element: file_link })
+        }
         const Display_plots =()=>{
             // console.log(pipeline)
             let g = [] 
@@ -36,6 +38,7 @@ export class Experiment_level extends Component {
         else{
             return (
             <Fragment>
+                
                 <div className="box">
                     <Display_plots/>
                 </div>

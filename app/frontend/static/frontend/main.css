@@ -164,6 +164,22 @@ body {
   overflow-x: scroll;
 }
 
+.displayNav{
+  min-width: '150px';
+  max-width: '150px';
+}
+.navArea{
+  max-height: 100%;
+  
+}
+
+.first_element_scroler{
+  cursor: pointer;
+}
+.pipeline_button:hover{
+  background-color: #889bc7;
+}
+
 #container {
   width: 100%;
   min-height: 100px;
@@ -235,10 +251,11 @@ body {
 
 
 .VisualisationArea{
-  height: 330px;
+  max-height: 350px;
   width:100%; 
   
   overflow-y: scroll;
   overflow-x: scroll;
-  margin: 1em;
+  margin-left: 1em;
+  margin-top: 0em;
 }

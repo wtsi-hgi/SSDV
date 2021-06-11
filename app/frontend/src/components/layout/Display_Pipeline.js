@@ -14,10 +14,8 @@ export class Display_Pipeline extends Component {
     render() {
         const display = (pipe, pipe_data, id) => {
             if (this.state.pipe === pipe) {
-
                 this.setState({ visualisation_data: false, pipe: false, id: false })
             } else {
-
                 this.setState({ visualisation_data: pipe_data, pipe: pipe, id: id })
             }
 
@@ -41,13 +39,7 @@ export class Display_Pipeline extends Component {
                         )
                     } else {
                         data.push(
-                            
-                                    <Fragment>
-                                        <button id={pipe} style={{ color: 'black' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe} </button>
-                                    
-                                    </Fragment>
-
-
+                                <button id={pipe} style={{ color: 'black' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe} </button>
                         )
                     }
 

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 import pandas as pd
 import os
 from glob import glob
+from backend.settings import MEDIA_ROOT,MEDIA_URL
 
 @api_view(['GET'])
 def hello_world(request):
@@ -16,12 +17,13 @@ def hello_world(request):
     if request.method == 'GET':
         # here list alll the drectories that are present in the dedicated storage folder
         dataset={}
-        for experiment in glob('./scRNA_Data/*'):
+        for experiment in glob(f'{MEDIA_ROOT}/*'):
             Experiment_Name =  (experiment.split('/')[-1])
             dataset[Experiment_Name] = {}
             for pipeline in glob(f'{experiment}/*'):
                 Pipeline_Name =  (pipeline.split('/')[-1])
                 for plot_name in glob(f'{pipeline}/*'):
+                    plot_name = plot_name.replace(MEDIA_ROOT+'/',MEDIA_URL)
                     try:
                         dataset[Experiment_Name][Pipeline_Name].append(plot_name)
                     except:

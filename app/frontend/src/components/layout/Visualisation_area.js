@@ -6,15 +6,29 @@ import CSV_Display from './CSV_Display';
 import InfoLogo from '../../../media_files/Asset_2.svg';
 import { Fragment } from 'react';
 
+
 export class Visualisation_area extends Component {
+
+    state = {
+        first_element: this.props.pipe_data[0]
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.pipe_data[0] !== this.props.pipe_data[0]) {
+            this.setState({ first_element: this.props.pipe_data[0] })
+        }
+    }
 
 
     render() {
-        const ShowPlots = () => {
-            // this should be able to handle all - csv , png, pdf files
 
-            let data_visiualisations = []
+        const change_first_element = (file_link) => {
+            this.setState({ first_element: file_link })
+        }
 
+        const NavLabels = () => {
+            let List_of_elements = []
+            let count = 0
             this.props.pipe_data.map(file_link => {
                 let ext = file_link.split('.')
                 let file_name = file_link.split('/')
@@ -25,49 +39,138 @@ export class Visualisation_area extends Component {
                 if (file_name === 'plot_ecdf-x_log10.var=pct_counts_gene_group__mito_transcript.color=experiment_id-adata') {
                     file_name = 'Density Plots'
                 }
+
+                file_name = file_name.replaceAll('_', ' ')
+                if (this.state.first_element === file_link) {
+                    List_of_elements.push(<a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>)
+                } else {
+                    List_of_elements.push(<a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>)
+                }
+
+                count += 1
+            })
+            return (List_of_elements)
+        }
+
+        const ShowPlots = () => {
+            // this should be able to handle all - csv , png, pdf files
+
+            let data_visiualisations = []
+
+            data_visiualisations.push(
+                // this is the navigation panel
+                <td className={'displayNav'}>
+                    <div className={'col'}>
+                        <a href={`info#${this.props.pipe}`}>
+                            <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
+                        </a>
+                        <ul>
+                            <div className={'navArea'}>
+                                <NavLabels />
+                            </div>
+                        </ul>
+                    </div>
+                </td>
+            )
+            let count = 0
+
+            let data_all = this.props.pipe_data
+            const first_elem = this.state.first_element
+            
+            const idx = data_all.indexOf(first_elem)
+            const data_set_start = data_all.slice(0,idx)
+            const data_set_end = data_all.slice(idx)
+            const data_set=data_set_end.concat(data_set_start)
+            
+            data_set.map(file_link => {
+                let col
+                if (count === 0) {
+                    col = 'red'
+                } else {
+                    col = 'black'
+                }
+
+                let ext = file_link.split('.')
+                let file_name = file_link.split('/')
+                ext = ext[ext.length - 1]
+                file_name = file_name[file_name.length - 1]
+                file_name = file_name.replace('.' + ext, '')
+
+                if (file_name === 'plot_ecdf-x_log10.var=pct_counts_gene_group__mito_transcript.color=experiment_id-adata') {
+                    file_name = 'Density Plots'
+                }
+
                 file_name = file_name.replaceAll('_', ' ')
                 if (ext === 'png' || ext === 'jpeg') {
 
                     data_visiualisations.push(
-                        <div className={'col'}>
-                            <a target="_blank" href={file_link}>
-                                <div className={'row'}>
-                                    <h2 className='title_cards'>{file_name}</h2>
-                                    <div className={'col'}><img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" /> </div>
+
+                        <td >
+                            <div className={"row"}>
+                                {/* <div className={'col-1'}>
+                                    <a href={`info#${this.props.pipe}`}>
+                                        <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
+                                    </a>
+                                </div> */}
+                                <div className={'col-11'}>
+                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
                                 </div>
-                                <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: "white", display: 'flex', justifyContent: 'center' }}>
-                                    <img src={file_link} />
-                                </Card>
-                            </a>
-                        </div>)
+                            </div>
+                            <div className={"row"}>
+                                <div className={'col'}>
+                                    <a target="_blank" href={file_link}>
+                                        <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: "white", display: 'flex', justifyContent: 'center' }}>
+                                            <img src={file_link} />
+                                        </Card>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    )
                 } else if (ext === 'pdf') {
                     data_visiualisations.push(
-                        <div className={'col child'}>
+                        <td>
+                            <div className={"row"}>
+                                {/* <div className={'col-1'}>
+                                    <a href={`info#${this.props.pipe}`}>
+                                        <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
+                                    </a>
+                                </div> */}
+                                <div className={'col-11'}>
+                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                                </div>
 
-                            <div className={'row'}>
-                                <h2 className='title_cards'>{file_name}</h2>
-                                <div className={'col'}><img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" /> </div>
                             </div>
-
-
-                            <a target="_blank" href={file_link}>
-                                <Card variant="outlined" className={'PDF box'} style={{ "width": 220, height: 260, padding: 5 }}>
-                                    <Document file={file_link}>
-                                        <Page pageNumber={1} width={210} height={210} />
-                                    </Document>
-                                </Card>
-                            </a>
-                        </div>
+                            <div className={"row"}>
+                                <div className={'col'}>
+                                    <a target="_blank" href={file_link}>
+                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, height: 260, padding: 5 }}>
+                                            <Document file={file_link}>
+                                                <Page pageNumber={1} width={210} height={210} />
+                                            </Document>
+                                        </Card>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
                     )
                 } else if (ext === 'tsv') {
                     data_visiualisations.push(
-                    <Fragment>
-                        <CSV_Display link={file_link} />
+                        <Fragment>
+                            <CSV_Display link={file_link} />
                         </Fragment>)
                 }
-            })
+                count += 1
+            }
+
+            )
             return (
-                data_visiualisations
+                <table class="table overflowTable" style={{ width: "100%" }}>
+                    <thead class="thead-light">
+                        <tr>{data_visiualisations}</tr>
+                    </thead>
+                </table>
+
             )
         }
 
@@ -76,12 +179,10 @@ export class Visualisation_area extends Component {
 
             <div className='VisualisationArea'>
                 <div class="container">
-
                     <div class="row align-items-start">
-                        <div className={'col'}><a href={`info#${this.props.pipe}`}>
-                            <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info</a>
+                        <div className={'col'}>
+                            <ShowPlots />
                         </div>
-                        <ShowPlots />
                     </div>
                 </div>
             </div>
