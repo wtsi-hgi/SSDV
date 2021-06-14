@@ -21,8 +21,8 @@ class App extends Component {
             
               <div className={"body_content"}>   
               <Switch>
-                <Route exact path={"/"} component={Experiment_level}/>
-                <Route exact path={"/info"} component={Descriptions}/>
+                <Route exact path={"/scrna/"} component={Experiment_level}/>
+                <Route exact path={"/scrna/info"} component={Descriptions}/>
                 
               </Switch>
             </div>
