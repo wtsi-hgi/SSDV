@@ -27,7 +27,7 @@ COPY ./scripts /scripts
 RUN chmod +x /scripts/*
 
 COPY --from=0 /nodebuild/frontend/static/frontend/main.js /app/frontend/static/frontend/main.js
-
+COPY --from=0 /nodebuild/frontend/static/frontend/main.js /vol/web/static/frontend/main.js
 
 RUN ls -l /app/frontend/static/frontend/
 RUN mkdir -p /vol/web/media

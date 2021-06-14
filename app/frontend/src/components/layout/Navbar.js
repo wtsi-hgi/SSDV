@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import {NavLink} from "react-router-dom";
+import { PREFIX } from '../../actions/types';
 export class Navbar extends Component {
     render() {
         return (
@@ -14,12 +15,12 @@ export class Navbar extends Component {
                     <div className="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarSupportedContent">
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item opener mr-3">
-                                <NavLink className="nav-link NavElement" to={"/"}
+                                <NavLink className="nav-link NavElement" to={`${PREFIX}/`}
                                     activeStyle={{ fontWeight: 'bold', backgroundColor: '#597FBA', color:'white' }}
                                     exact>Experiments</NavLink>
                             </li>
                             <li className="nav-item opener mr-3">
-                                <NavLink className="nav-link NavElement" to={"/info"} 
+                                <NavLink className="nav-link NavElement" to={`${PREFIX}/info`} 
                                     activeStyle={{ fontWeight: 'bold', backgroundColor: '#597FBA', color:'white' }}
                                     exact>Pipeline Descriptions</NavLink>
                             </li>

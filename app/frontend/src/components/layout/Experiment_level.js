@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { Fragment } from 'react';
 import Display_Pipeline from './Display_Pipeline';
+import { PREFIX } from '../../actions/types';
 export class Experiment_level extends Component {
 
     state={
@@ -10,7 +11,7 @@ export class Experiment_level extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/api_scrna/snippets`)
+        axios.get(`${PREFIX}/api_scrna/snippets`)
         .then(res => {
           const protein_data = res.data;
           this.setState({'experiments':protein_data,'loading':false})

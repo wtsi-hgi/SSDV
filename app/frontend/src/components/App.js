@@ -8,6 +8,7 @@ import Experiment_level from "./layout/Experiment_level";
 import Footer from "./layout/Footer";
 import { pdfjs } from 'react-pdf';
 import Descriptions from "./layout/Descriptions";
+import { PREFIX } from '../actions/types';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 class App extends Component {
@@ -21,8 +22,8 @@ class App extends Component {
             
               <div className={"body_content"}>   
               <Switch>
-                <Route exact path={"/scrna/"} component={Experiment_level}/>
-                <Route exact path={"/scrna/info"} component={Descriptions}/>
+                <Route exact path={`${PREFIX}/`} component={Experiment_level}/>
+                <Route exact path={`${PREFIX}/info`} component={Descriptions}/>
                 
               </Switch>
             </div>

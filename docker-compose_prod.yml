@@ -13,6 +13,7 @@ services:
     # image: mercury/scrna_web_browser:0.31 #enable to tag the image
     volumes:
       - /Users/mo11/work/app_development/static:/vol/web
+     
     depends_on:
       - scrna_db
     env_file: scrna.env

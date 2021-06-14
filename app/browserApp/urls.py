@@ -8,6 +8,7 @@ router=routers.DefaultRouter()
 router.register('user',UserViewSet,'user')
 router.register('group',GroupViewSet,'group')
 router.register('files',Existing_File_Viewset,'files')
+# router.register('snippets',Existing_File_Viewset,'files')
 # router.register('upload', FileView.as_view(), name='file-upload')
 
 urlpatterns = [
