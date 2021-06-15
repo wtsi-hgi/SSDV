@@ -7,7 +7,7 @@ export class Footer extends Component {
             <div id="footer">
                 <h2>Wellcome Sanger Institute, Genome Research Limited (reg no. 2742969) is a charity registered in England with number 1021457</h2>
                 <p><i>Developed and maintained by HGI team</i></p>
-                <p><i>Version: 0.3</i></p>
+                <p><i>Version: 1.0</i></p>
             </div>
             </Fragment>
         )
