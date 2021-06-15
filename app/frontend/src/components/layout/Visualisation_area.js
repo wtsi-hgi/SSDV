@@ -56,22 +56,25 @@ export class Visualisation_area extends Component {
             // this should be able to handle all - csv , png, pdf files
 
             let data_visiualisations = []
+            if (this.props.pipe!=='Fetch Pipeline'){
+                data_visiualisations.push(
+                    // this is the navigation panel - we do not display this for the Fetch Pipeline
+                    <td className={'displayNav'}>
+                        <div className={'col'} style={{width:'200px'}}>
+                            <a href={`info#${this.props.pipe}`}>
+                                <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
+                            </a>
+                            
+                                <div className={'navArea'}>
+                                    <NavLabels />
+                                </div>
+                           
+                        </div>
+                    </td>
+                )
+            }
 
-            data_visiualisations.push(
-                // this is the navigation panel
-                <td className={'displayNav'}>
-                    <div className={'col'}>
-                        <a href={`info#${this.props.pipe}`}>
-                            <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
-                        </a>
-                        <ul>
-                            <div className={'navArea'}>
-                                <NavLabels />
-                            </div>
-                        </ul>
-                    </div>
-                </td>
-            )
+
             let count = 0
 
             let data_all = this.props.pipe_data
@@ -84,10 +87,13 @@ export class Visualisation_area extends Component {
             
             data_set.map(file_link => {
                 let col
+                let bck_col
                 if (count === 0) {
                     col = 'red'
+                    bck_col = 'red'
                 } else {
                     col = 'black'
+                    bck_col = 'white'
                 }
 
                 let ext = file_link.split('.')
@@ -119,7 +125,7 @@ export class Visualisation_area extends Component {
                             <div className={"row"}>
                                 <div className={'col'}>
                                     <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: "white", display: 'flex', justifyContent: 'center' }}>
+                                        <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
                                             <img src={file_link} />
                                         </Card>
                                     </a>
@@ -144,7 +150,7 @@ export class Visualisation_area extends Component {
                             <div className={"row"}>
                                 <div className={'col'}>
                                     <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, height: 260, padding: 5 }}>
+                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor:bck_col, height: 260, padding: 5 }}>
                                             <Document file={file_link}>
                                                 <Page pageNumber={1} width={210} height={210} />
                                             </Document>
@@ -157,7 +163,7 @@ export class Visualisation_area extends Component {
                 } else if (ext === 'tsv') {
                     data_visiualisations.push(
                         <Fragment>
-                            <CSV_Display link={file_link} />
+                            <CSV_Display pipe={this.props.pipe} link={file_link} />
                         </Fragment>)
                 }
                 count += 1

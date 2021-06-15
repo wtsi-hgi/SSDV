@@ -11,6 +11,7 @@ export class Experiment_level extends Component {
     }
 
     componentDidMount() {
+        
         axios.get(`${PREFIX}/api_scrna/snippets`)
         .then(res => {
           const protein_data = res.data;

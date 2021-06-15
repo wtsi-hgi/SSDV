@@ -26,7 +26,7 @@ export class Display_Pipeline extends Component {
         const Button_Display = () => {
             let data = []
             let count = 0
-            let order = ['Fetch Pipeline', 'Cellbender', 'Deconvolution', 'QC metrics']
+            let order = ['Fetch Pipeline', 'Cellbender', 'Deconvolution', 'QC metrics','Clustering']
 
             order.map(pipe => {
 
@@ -35,15 +35,19 @@ export class Display_Pipeline extends Component {
 
                     if (this.state.id === pipe) {
                         data.push(
-                            <button id={pipe} style={{ backgroundColor: '#587EB8', color: 'white', fontWeight: 'bold' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe}</button>
+                            <td><button id={pipe} style={{ backgroundColor: '#587EB8', color: 'white', fontWeight: 'bold' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe}</button></td>
                         )
                     } else {
                         data.push(
-                                <button id={pipe} style={{ color: 'black' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe} </button>
+                            <td><button id={pipe} style={{ color: 'black' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe} </button></td>
                         )
                     }
 
                     count += 1
+                }else{
+                    data.push(
+                        <td><button id={pipe} style={{ color: 'black' }} className='pipeline_button_disabled' disabled>{pipe} </button></td>
+                    )
                 }
             })
             return data
@@ -57,12 +61,14 @@ export class Display_Pipeline extends Component {
                     <h1 style={{ zIndex: 1 }}>{this.props.exp1}</h1>
                     <div id="container">
                         <div id="infoi">
-                            <div>
+                            <table>
+                                <thread>
                                 <Button_Display />
-                            </div>
+                                </thread>
+                            </table>
                         </div>
                         <div id="navi">
-                            <img style={{ width: '100%', height: 'auto' }} src={Bullett} alt="React Logo" />
+                            <img className={'bulett'} src={Bullett} alt="React Logo" />
                         </div>
                     </div>
 
