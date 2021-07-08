@@ -6,9 +6,10 @@ import { Fragment } from 'react';
 import Barchart from '../charts/Barchart';
 // import ReactHtmlParser from 'react-html-parser'; 
 import InfoLogo from '../../../media_files/Asset_2.svg';
+import { useScreenshot } from "use-react-screenshot";
 
 export class CSV_Display extends Component {
-    labels_not_to_display_in_chart = ['experiment_id', 'sanger_sample_id', 'irods_cellranger_path']
+    labels_not_to_display_in_chart = ['experiment_id', 'sanger_sample_id', 'irods_cellranger_path',]
     constructor(props) {
         super(props);
 
@@ -35,13 +36,7 @@ export class CSV_Display extends Component {
         });
     }
 
-
-
-
     getData(result) {
-        // we need to find what element of the table we want to use for Chart.js visualisations
-
-
         this.setState({ data: result.data });
     }
 
@@ -98,28 +93,40 @@ export class CSV_Display extends Component {
             let body = []
             let header = []
             let count = 0
+            let exclude = [1, 2]
+            let className1 = 'overflowTableCell'
             this.state.data.map(row1 => {
-
+                let row_count = 0
                 if (count === 0) {
+
                     row1.map(td1 => {
-                        if (this.labels_not_to_display_in_chart.includes(td1)) {
-                            header.push(<th className='overflowTableCell'>{td1}</th>)
+                        if (!exclude.includes(row_count)) {
+                            if (row_count == 0) { className1 = 'overflowTableCell' }else{className1 = 'overflowTableCell' }
+                            if (this.labels_not_to_display_in_chart.includes(td1)) {
+                                header.push(<th className={className1}>{td1}</th>)
 
-                        } else {
-                            header.push(<th className='overflowTableCell'><a className={'first_element_scroler'} onClick={() => Show_Barchart(td1)}>{td1}</a></th>)
+                            } else {
+                                header.push(<th className={className1}><a className={'first_element_scroler'} onClick={() => Show_Barchart(td1)}>{td1}</a></th>)
 
+                            }
                         }
+                        row_count += 1
                     })
 
                 } else {
                     let body_row = []
-                    row1.map(td1 => {
 
-                        body_row.push(
-                            <td scope="col" className='overflowTableCell'>
-                                {td1}
-                            </td>
-                        )
+                    row1.map(td1 => {
+                        if (!exclude.includes(row_count)) {
+                            if (row_count == 0) { className1 = 'overflowTableCell1' }else{className1 = 'overflowTableCell' }
+
+                            body_row.push(
+                                <td scope="col" className={className1}>
+                                    {td1}
+                                </td>
+                            )
+                        }
+                        row_count += 1
                     })
                     body.push(
                         <tr key={`row_${count}`}>
@@ -136,9 +143,9 @@ export class CSV_Display extends Component {
             if (this.state.display_type === 'table') {
                 return (
                     <Fragment>
-                        <div style={{float:'left', width:'300px'}}>
+                        <div style={{ float: 'left', width: '150px' }}>
                             <a href={this.props.link}><GetAppIcon />Download  </a>
-                            
+
                             <a href={`info#${this.props.pipe}`}>
                                 <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
                             </a>

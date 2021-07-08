@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { Card, Box } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
 import { Document, Page } from 'react-pdf';
 import CSV_Display from './CSV_Display';
 import InfoLogo from '../../../media_files/Asset_2.svg';
 import { Fragment } from 'react';
-
+import { Image_to_canvas } from "./Image_to_canvas"
 
 export class Visualisation_area extends Component {
 
     state = {
-        first_element: this.props.pipe_data[0]
+        first_element: this.props.pipe_data[0],
+        fetch_csv: 'CSV'
     }
 
     componentDidUpdate(prevProps) {
@@ -20,12 +20,17 @@ export class Visualisation_area extends Component {
     }
 
 
+
+
     render() {
 
         const change_first_element = (file_link) => {
             this.setState({ first_element: file_link })
         }
-
+        const changeState = (state_set) =>{
+           
+            this.setState({fetch_csv:state_set})
+        }
         const NavLabels = () => {
             let List_of_elements = []
             let count = 0
@@ -56,22 +61,39 @@ export class Visualisation_area extends Component {
             // this should be able to handle all - csv , png, pdf files
 
             let data_visiualisations = []
-            if (this.props.pipe!=='Fetch Pipeline'){
+            if (this.props.pipe !== 'Fetch Pipeline') {
                 data_visiualisations.push(
                     // this is the navigation panel - we do not display this for the Fetch Pipeline
                     <td className={'displayNav'}>
-                        <div className={'col'} style={{width:'200px'}}>
+                        <div className={'col'} style={{ width: '200px' }}>
                             <a href={`info#${this.props.pipe}`}>
                                 <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
                             </a>
-                            
-                                <div className={'navArea'}>
-                                    <NavLabels />
-                                </div>
-                           
+
+                            <div className={'navArea'}>
+                                <NavLabels />
+                            </div>
+
                         </div>
                     </td>
                 )
+            }else{
+                {this.state.fetch_csv ==='CSV'?data_visiualisations.push(<button onClick={()=>changeState('htmls')}>htmls</button>):data_visiualisations.push(<button onClick={()=>changeState('CSV')}>CSV</button>)}
+                if (this.state.fetch_csv==='htmls'){
+                    data_visiualisations.push(
+                        // this is the navigation panel - we do not display this for the Fetch Pipeline
+                        <td className={'displayNav'}>
+                            <div className={'col'} style={{ width: '200px' }}>
+                                <a href={`info#${this.props.pipe}`}>
+                                    <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
+                                </a>
+                                <div className={'navArea'}>
+                                    <NavLabels />
+                                </div>
+                            </div>
+                        </td>
+                    )
+                }
             }
 
 
@@ -79,12 +101,12 @@ export class Visualisation_area extends Component {
 
             let data_all = this.props.pipe_data
             const first_elem = this.state.first_element
-            
+
             const idx = data_all.indexOf(first_elem)
-            const data_set_start = data_all.slice(0,idx)
+            const data_set_start = data_all.slice(0, idx)
             const data_set_end = data_all.slice(idx)
-            const data_set=data_set_end.concat(data_set_start)
-            
+            const data_set = data_set_end.concat(data_set_start)
+
             data_set.map(file_link => {
                 let col
                 let bck_col
@@ -150,7 +172,7 @@ export class Visualisation_area extends Component {
                             <div className={"row"}>
                                 <div className={'col'}>
                                     <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor:bck_col, height: 260, padding: 5 }}>
+                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor: bck_col, height: 260, padding: 5 }}>
                                             <Document file={file_link}>
                                                 <Page pageNumber={1} width={210} height={210} />
                                             </Document>
@@ -160,12 +182,46 @@ export class Visualisation_area extends Component {
                             </div>
                         </td>
                     )
-                } else if (ext === 'tsv') {
-                    data_visiualisations.push(
-                        <Fragment>
-                            <CSV_Display pipe={this.props.pipe} link={file_link} />
-                        </Fragment>)
                 }
+
+                if (this.props.pipe === 'Fetch Pipeline') {
+                    // Handle the fetch seperatelly since there is a choice whether we need a csv display or not.
+                    
+                    if (ext === 'tsv') {
+                        if (this.state.fetch_csv==='CSV') {
+                            data_visiualisations.push(
+                                <Fragment>
+                                    <CSV_Display pipe={this.props.pipe} link={file_link} />
+                                </Fragment>
+                            )
+                        }
+
+                    } else if (ext === 'html') {
+                        if (this.state.fetch_csv==='htmls') {
+                            data_visiualisations.push(
+                                <td >
+                                    <div className={"row"}>
+                                        <div className={'col-11'}>
+                                            <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                                        </div>
+                                    </div>
+                                    <div className={"row"}>
+                                        <div className={'col'}>
+                                            <a target="_blank" href={file_link}>
+                                            <div className={'row'} ><button className={'btn btn-light'} style={{ "width": 220, height: '20px' , fontSize:'9px'}}>open</button></div>
+                                            <div className={'row'}><Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, padding: '0', backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>                    
+                                                    <Image_to_canvas link={file_link} />
+                                                </Card></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            )
+                        }
+
+                    }
+                }
+
                 count += 1
             }
 
@@ -184,12 +240,12 @@ export class Visualisation_area extends Component {
         return (
 
             <div className='VisualisationArea'>
-                <div class="container">
+                
                     <div class="row align-items-start">
                         <div className={'col'}>
                             <ShowPlots />
                         </div>
-                    </div>
+                   
                 </div>
             </div>
 

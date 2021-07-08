@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Fragment } from 'react'
 import Bullett from '../../../media_files/Asset_1.svg';
+import Pipe from '../../../media_files/flowchart.png';
 
 import Visualisation_area from './Visualisation_area';
 
@@ -72,11 +73,11 @@ export class Display_Pipeline extends Component {
                         </div>
                     </div>
 
-                    <div>
+
+                </div>
+                <div>
                         {this.state.visualisation_data ? <Visualisation_area pipe_data={this.state.visualisation_data} pipe={this.state.pipe} /> : <Fragment />}
                     </div>
-                </div>
-
             </Fragment>
         )
     }

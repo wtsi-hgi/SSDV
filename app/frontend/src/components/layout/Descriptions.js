@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import PipePic from '../../../media_files/flowchart.png';
 
 export class Descriptions extends Component {
 
@@ -7,6 +7,7 @@ export class Descriptions extends Component {
 
         return (
             <div className="box">
+                <img style={{width:'100%'}} src={PipePic}/>
                 <div className={'paragraph_desc'}>
                     <h1 className={'title_description'} id="Fech pipeline">Fech pipeline </h1>
                     <p>
