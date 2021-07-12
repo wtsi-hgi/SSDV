@@ -19,82 +19,58 @@ export class Visualisation_area extends Component {
         }
     }
 
-
-
-
     render() {
 
         const change_first_element = (file_link) => {
             this.setState({ first_element: file_link })
         }
-        const changeState = (state_set) =>{
-           
-            this.setState({fetch_csv:state_set})
+        const changeState = (state_set) => {
+
+            this.setState({ fetch_csv: state_set })
         }
-        const NavLabels = () => {
-            let List_of_elements = []
-            let count = 0
-            this.props.pipe_data.map(file_link => {
-                let ext = file_link.split('.')
-                let file_name = file_link.split('/')
-                ext = ext[ext.length - 1]
-                file_name = file_name[file_name.length - 1]
-                file_name = file_name.replace('.' + ext, '')
+     
+        const Nav  = (data) =>{
+   
+            
+            if (data.length>1){
+                
+                
+            return(
+                <td className={'displayNav'}>
+                <div className={'col'} style={{ width: '200px' }}>
+                    <a href={`info#${this.props.pipe}`}>
+                        <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
+                    </a>
 
-                if (file_name === 'plot_ecdf-x_log10.var=pct_counts_gene_group__mito_transcript.color=experiment_id-adata') {
-                    file_name = 'Density Plots'
-                }
+                    <div className={'navArea'}>
+                        {data}
+                    </div>
 
-                file_name = file_name.replaceAll('_', ' ')
-                if (this.state.first_element === file_link) {
-                    List_of_elements.push(<a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>)
-                } else {
-                    List_of_elements.push(<a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>)
-                }
-
-                count += 1
-            })
-            return (List_of_elements)
+                </div>
+            </td>
+            )
+        }
+        else{
+            // nav is not required if oly one entry
+            return <Fragment/>
+        }
         }
 
         const ShowPlots = () => {
             // this should be able to handle all - csv , png, pdf files
 
             let data_visiualisations = []
-            if (this.props.pipe !== 'Fetch Pipeline') {
-                data_visiualisations.push(
-                    // this is the navigation panel - we do not display this for the Fetch Pipeline
-                    <td className={'displayNav'}>
-                        <div className={'col'} style={{ width: '200px' }}>
-                            <a href={`info#${this.props.pipe}`}>
-                                <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
-                            </a>
+            let data_types = []
+            let List_of_elements ={}
+            let List_of_keys = []
+            // if (this.props.pipe === 'Fetch Pipeline') {
+            // //     data_visiualisations.push(<div style={{width:'100%',height:'100px',backgroundColor:'red'}}></div>)
+            // // //     { this.state.fetch_csv === 'CSV' ? data_visiualisations.push(<button onClick={() => changeState('htmls')}>htmls</button>) : data_visiualisations.push(<button onClick={() => changeState('CSV')}>CSV</button>) }
 
-                            <div className={'navArea'}>
-                                <NavLabels />
-                            </div>
+                
+            // } 
 
-                        </div>
-                    </td>
-                )
-            }else{
-                {this.state.fetch_csv ==='CSV'?data_visiualisations.push(<button onClick={()=>changeState('htmls')}>htmls</button>):data_visiualisations.push(<button onClick={()=>changeState('CSV')}>CSV</button>)}
-                if (this.state.fetch_csv==='htmls'){
-                    data_visiualisations.push(
-                        // this is the navigation panel - we do not display this for the Fetch Pipeline
-                        <td className={'displayNav'}>
-                            <div className={'col'} style={{ width: '200px' }}>
-                                <a href={`info#${this.props.pipe}`}>
-                                    <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
-                                </a>
-                                <div className={'navArea'}>
-                                    <NavLabels />
-                                </div>
-                            </div>
-                        </td>
-                    )
-                }
-            }
+            
 
 
             let count = 0
@@ -118,6 +94,7 @@ export class Visualisation_area extends Component {
                     bck_col = 'white'
                 }
 
+
                 let ext = file_link.split('.')
                 let file_name = file_link.split('/')
                 ext = ext[ext.length - 1]
@@ -129,6 +106,19 @@ export class Visualisation_area extends Component {
                 }
 
                 file_name = file_name.replaceAll('_', ' ')
+                if (this.state.first_element === file_link) {
+                    List_of_elements[file_name]=<a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>
+                    List_of_keys.push(file_name)
+                } else {
+                    List_of_elements[file_name]=<a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>
+                    List_of_keys.push(file_name)
+                }
+
+                count += 1
+
+
+
+
                 if (ext === 'png' || ext === 'jpeg') {
 
                     data_visiualisations.push(
@@ -186,9 +176,9 @@ export class Visualisation_area extends Component {
 
                 if (this.props.pipe === 'Fetch Pipeline') {
                     // Handle the fetch seperatelly since there is a choice whether we need a csv display or not.
-                    
+
                     if (ext === 'tsv') {
-                        if (this.state.fetch_csv==='CSV') {
+                        if (this.state.fetch_csv === 'CSV') {
                             data_visiualisations.push(
                                 <Fragment>
                                     <CSV_Display pipe={this.props.pipe} link={file_link} />
@@ -197,7 +187,7 @@ export class Visualisation_area extends Component {
                         }
 
                     } else if (ext === 'html') {
-                        if (this.state.fetch_csv==='htmls') {
+                        if (this.state.fetch_csv === 'htmls') {
                             data_visiualisations.push(
                                 <td >
                                     <div className={"row"}>
@@ -208,8 +198,8 @@ export class Visualisation_area extends Component {
                                     <div className={"row"}>
                                         <div className={'col'}>
                                             <a target="_blank" href={file_link}>
-                                            <div className={'row'} ><button className={'btn btn-light'} style={{ "width": 220, height: '20px' , fontSize:'9px'}}>open</button></div>
-                                            <div className={'row'}><Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, padding: '0', backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>                    
+                                                <div className={'row'} ><button className={'btn btn-light'} style={{ "width": 220, height: '20px', fontSize: '9px' }}>open</button></div>
+                                                <div className={'row'}><Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, padding: '0', backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
                                                     <Image_to_canvas link={file_link} />
                                                 </Card></div>
                                             </a>
@@ -226,10 +216,18 @@ export class Visualisation_area extends Component {
             }
 
             )
+            let List_of_elements2=[]
+            List_of_keys.sort().map(key1=>{
+                List_of_elements2.push(List_of_elements[key1])
+            })
+
             return (
                 <table class="table overflowTable" style={{ width: "100%" }}>
                     <thead class="thead-light">
-                        <tr>{data_visiualisations}</tr>
+                        <tr>
+                            {Nav(List_of_elements2)}
+                            {data_visiualisations}
+                        </tr>
                     </thead>
                 </table>
 
@@ -240,12 +238,12 @@ export class Visualisation_area extends Component {
         return (
 
             <div className='VisualisationArea'>
-                
-                    <div class="row align-items-start">
-                        <div className={'col'}>
-                            <ShowPlots />
-                        </div>
-                   
+<div style={{width:'100%',height:'30px'}}>Plot type:<button>html</button></div>
+                <div class="row align-items-start">
+                    <div className={'col'}>
+                        <ShowPlots />
+                    </div>
+
                 </div>
             </div>
 

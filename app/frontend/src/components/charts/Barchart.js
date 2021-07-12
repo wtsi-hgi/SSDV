@@ -27,8 +27,7 @@ export class Barchart extends Component {
             <div>
                 <Bar
                 data={this.state.chartData}
-                // width={100}
-                height={100}
+     
                 // options={{ maintainAspectRatio: false }}
             />
             </div>

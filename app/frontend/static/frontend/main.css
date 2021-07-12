@@ -48,6 +48,13 @@ iframe {
   transform-origin: 0 0;
 }
 
+#table_raw{
+  -webkit-transform: scale(0.4);
+  transform: scale(0.9);
+  -webkit-transform-origin: 0 0 0 0;
+  transform-origin: 0 0;
+}
+
 #website_title {
   width: 100%;
   font-size: 36px;
@@ -180,19 +187,41 @@ iframe {
 
 .pipeline_button{
   /* min-width: 200px; */
-  width: 150px;
-  height: auto;
-  margin: 10px;
+  /* position: absolute; */
+  
+  right: 15px;
+  height:50px;
+  margin: 5px;
+  width: 180px;
 }
 
+.bullet{
+  height: 100px;
+}
+
+.pipeline_thread{
+  position: relative;
+  /* border: 1px solid blue; */
+  width: 300px;
+  max-height: 110px;
+  height: 50px;
+}
+.sub_div{
+  position: absolute;
+}
 
 .pipeline_button_disabled{
   /* min-width: 200px; */
   opacity: 80%;
-  width: 150px;
+  
   cursor: not-allowed;
-  height: auto;
-  margin: 10px;
+  /* position: absolute; */
+  border: 1px solid red;
+  top: 20px;
+  right: 15px;
+  height:50px;
+  margin: 5px;
+  width: 180px;
 }
 
 #child {
@@ -272,6 +301,9 @@ iframe {
   z-index: 10;
   
 }
+#th1{
+  float: left;
+}
 
 
 .overflowdiv {
@@ -297,8 +329,7 @@ iframe {
 .overflowTableCell{
   max-width: 100px;
   max-height: 100px;
-
-  
+  height: 100px;
   overflow-y: hidden;
   overflow-x: scroll;
   background:rosybrown;

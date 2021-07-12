@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Papa from 'papaparse';
 import { CsvToHtmlTable } from 'react-csv-to-table';
-import GetAppIcon from '@material-ui/icons/GetApp';
+
 import { Fragment } from 'react';
 import Barchart from '../charts/Barchart';
 // import ReactHtmlParser from 'react-html-parser'; 
@@ -143,16 +143,10 @@ export class CSV_Display extends Component {
             if (this.state.display_type === 'table') {
                 return (
                     <Fragment>
-                        <div style={{ float: 'left', width: '150px' }}>
-                            <a href={this.props.link}><GetAppIcon />Download  </a>
 
-                            <a href={`info#${this.props.pipe}`}>
-                                <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
-                            </a>
-                        </div>
-                        <table class="table overflowTable table-striped" style={{ width: "100%" }}>
+                        <table class="table table-striped" style={{ width: "100%" }}>
                             <thead class="thead-light">
-                                <tr>{header}</tr>
+                                <tr id={'csv_head'}>{header}</tr>
                             </thead>
                             <tbody>
                                 {body}
@@ -166,6 +160,7 @@ export class CSV_Display extends Component {
                     <Fragment>
                         <button onClick={() => return_to_table()}>Back to table</button>
                         <Barchart
+                            
                             data_for_barchart={this.state.data_for_barchart}
                             labels_for_barchart={this.state.labels_for_barchart}
                             title_of_barchart={this.state.title_of_barchart}
