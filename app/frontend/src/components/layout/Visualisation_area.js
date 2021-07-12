@@ -10,7 +10,9 @@ export class Visualisation_area extends Component {
 
     state = {
         first_element: this.props.pipe_data[0],
-        fetch_csv: 'CSV'
+        fetch_type: 'CSV',
+       
+        plot_type_names:[]
     }
 
     componentDidUpdate(prevProps) {
@@ -21,12 +23,116 @@ export class Visualisation_area extends Component {
 
     render() {
 
+        const handle_links = (file_link,file_name) =>{
+            if (this.state.first_element === file_link) {
+                return <a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>
+                
+            } else {
+                return <a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>
+                
+            }
+        }
+
+        const html_handle = (ext,file_link,file_name,col,bck_col) =>{
+            if (ext === 'html') {
+                return (
+                    <td >
+                        <div className={"row"}>
+                            <div className={'col-11'}>
+                                <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                            </div>
+                        </div>
+                        <div className={"row"}>
+                            <div className={'col'}>
+                                <a target="_blank" href={file_link}>
+                                    <div className={'row'} ><button className={'btn btn-light'} style={{ "width": 220, height: '20px', fontSize: '9px' }}>open</button></div>
+                                    <div className={'row'}><Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, padding: '0', backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
+                                        <Image_to_canvas link={file_link} />
+                                    </Card></div>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                )
+        }else return null
+        }
+
+
+        const pdf_handle = (ext,file_link,file_name,col,bck_col) =>{
+            if (ext === 'pdf') {
+                return (
+                    <td>
+                            <div className={"row"}>
+                                {/* <div className={'col-1'}>
+                                    <a href={`info#${this.props.pipe}`}>
+                                        <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
+                                    </a>
+                                </div> */}
+                                <div className={'col-11'}>
+                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                                </div>
+
+                            </div>
+                            <div className={"row"}>
+                                <div className={'col'}>
+                                    <a target="_blank" href={file_link}>
+                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor: bck_col, height: 260, padding: 5 }}>
+                                            <Document file={file_link}>
+                                                <Page pageNumber={1} width={210} height={210} />
+                                            </Document>
+                                        </Card>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                )
+        }else return <Fragment/>
+        }
+
+        const csv_handle = (ext,file_link,file_name,col,bck_col) =>{
+            if (ext === 'tsv') {
+                return (
+                    <Fragment>
+                        <CSV_Display pipe={this.props.pipe} link={file_link} />
+                    </Fragment>
+                )
+        }else return null
+        }
+
+        const jpg_png_handle = (ext,file_link,file_name,col,bck_col) =>{
+            if (ext === 'png' || ext === 'jpeg') {
+                return (
+                    <td >
+                    <div className={"row"}>
+                        {/* <div className={'col-1'}>
+                            <a href={`info#${this.props.pipe}`}>
+                                <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
+                            </a>
+                        </div> */}
+                        <div className={'col-11'}>
+                            <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                        </div>
+                    </div>
+                    <div className={"row"}>
+                        <div className={'col'}>
+                            <a target="_blank" href={file_link}>
+                                <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
+                                    <img src={file_link} />
+                                </Card>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                )
+        }else return <Fragment/>
+        }
+
         const change_first_element = (file_link) => {
             this.setState({ first_element: file_link })
         }
         const changeState = (state_set) => {
-
-            this.setState({ fetch_csv: state_set })
+            
+            this.setState({ fetch_type: state_set })
         }
      
         const Nav  = (data) =>{
@@ -55,6 +161,20 @@ export class Visualisation_area extends Component {
             return <Fragment/>
         }
         }
+        const Plot_Types = (plot_types) =>{
+            
+            let data = []
+            if (plot_types){
+                
+                plot_types.map(typ=>{
+                    
+                    data.push(<button onClick={() => changeState(typ)}>{typ}</button>)
+                })
+                
+            }
+            return (<div>{data}</div>)
+           
+        }
 
         const ShowPlots = () => {
             // this should be able to handle all - csv , png, pdf files
@@ -63,15 +183,6 @@ export class Visualisation_area extends Component {
             let data_types = []
             let List_of_elements ={}
             let List_of_keys = []
-            // if (this.props.pipe === 'Fetch Pipeline') {
-            // //     data_visiualisations.push(<div style={{width:'100%',height:'100px',backgroundColor:'red'}}></div>)
-            // // //     { this.state.fetch_csv === 'CSV' ? data_visiualisations.push(<button onClick={() => changeState('htmls')}>htmls</button>) : data_visiualisations.push(<button onClick={() => changeState('CSV')}>CSV</button>) }
-
-                
-            // } 
-
-            
-
 
             let count = 0
 
@@ -106,113 +217,36 @@ export class Visualisation_area extends Component {
                 }
 
                 file_name = file_name.replaceAll('_', ' ')
-                if (this.state.first_element === file_link) {
-                    List_of_elements[file_name]=<a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>
-                    List_of_keys.push(file_name)
-                } else {
-                    List_of_elements[file_name]=<a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>
-                    List_of_keys.push(file_name)
-                }
+
 
                 count += 1
+                if (this.props.pipe === 'Fetch Pipeline' && this.state.fetch_type ==='CSV') {
+                    let data = csv_handle(ext,file_link,file_name,col,bck_col)
+                    if (data){
+                        data_visiualisations.push(data)
+                        List_of_elements[file_name]=handle_links(file_link)
+                        List_of_keys.push(file_name)
+                    }
 
-
-
-
-                if (ext === 'png' || ext === 'jpeg') {
-
-                    data_visiualisations.push(
-
-                        <td >
-                            <div className={"row"}>
-                                {/* <div className={'col-1'}>
-                                    <a href={`info#${this.props.pipe}`}>
-                                        <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
-                                    </a>
-                                </div> */}
-                                <div className={'col-11'}>
-                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
-                                </div>
-                            </div>
-                            <div className={"row"}>
-                                <div className={'col'}>
-                                    <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
-                                            <img src={file_link} />
-                                        </Card>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    )
-                } else if (ext === 'pdf') {
-                    data_visiualisations.push(
-                        <td>
-                            <div className={"row"}>
-                                {/* <div className={'col-1'}>
-                                    <a href={`info#${this.props.pipe}`}>
-                                        <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
-                                    </a>
-                                </div> */}
-                                <div className={'col-11'}>
-                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
-                                </div>
-
-                            </div>
-                            <div className={"row"}>
-                                <div className={'col'}>
-                                    <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor: bck_col, height: 260, padding: 5 }}>
-                                            <Document file={file_link}>
-                                                <Page pageNumber={1} width={210} height={210} />
-                                            </Document>
-                                        </Card>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    )
-                }
-
-                if (this.props.pipe === 'Fetch Pipeline') {
-                    // Handle the fetch seperatelly since there is a choice whether we need a csv display or not.
-
-                    if (ext === 'tsv') {
-                        if (this.state.fetch_csv === 'CSV') {
-                            data_visiualisations.push(
-                                <Fragment>
-                                    <CSV_Display pipe={this.props.pipe} link={file_link} />
-                                </Fragment>
-                            )
-                        }
-
-                    } else if (ext === 'html') {
-                        if (this.state.fetch_csv === 'htmls') {
-                            data_visiualisations.push(
-                                <td >
-                                    <div className={"row"}>
-                                        <div className={'col-11'}>
-                                            <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
-                                        </div>
-                                    </div>
-                                    <div className={"row"}>
-                                        <div className={'col'}>
-                                            <a target="_blank" href={file_link}>
-                                                <div className={'row'} ><button className={'btn btn-light'} style={{ "width": 220, height: '20px', fontSize: '9px' }}>open</button></div>
-                                                <div className={'row'}><Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, padding: '0', backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
-                                                    <Image_to_canvas link={file_link} />
-                                                </Card></div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            )
-                        }
-
+                }else if (this.props.pipe === 'Fetch Pipeline' && this.state.fetch_type ==='htmls') {
+                    let data =html_handle(ext,file_link,file_name,col,bck_col)
+                    if (data){
+                        data_visiualisations.push(data)
+                        List_of_elements[file_name]=handle_links(file_link)
+                        
+                        List_of_keys.push(file_name)
                     }
                 }
+                else{
+                    data_visiualisations.push(html_handle(ext,file_link,file_name,col,bck_col))
+                    data_visiualisations.push(jpg_png_handle(ext,file_link,file_name,col,bck_col))
+                    data_visiualisations.push(pdf_handle(ext,file_link,file_name,col,bck_col))
+                    data_visiualisations.push(csv_handle(ext,file_link,file_name,col,bck_col))
+                    List_of_elements[file_name]=handle_links(file_link,file_name)
+                    List_of_keys.push(file_name)
+                }
 
-                count += 1
+
             }
 
             )
@@ -235,10 +269,21 @@ export class Visualisation_area extends Component {
         }
 
 
+
+
+
+        let plot_types=null
+        if (this.props.pipe === 'Fetch Pipeline') {
+            plot_types= ['CSV','htmls']
+        } else if (this.props.pipe === 'Cell-type assignment'){
+            plot_types= ['CSV','htmls']
+        }
+        
         return (
 
             <div className='VisualisationArea'>
-<div style={{width:'100%',height:'30px'}}>Plot type:<button>html</button></div>
+                {Plot_Types(plot_types)}
+
                 <div class="row align-items-start">
                     <div className={'col'}>
                         <ShowPlots />
