@@ -36,7 +36,7 @@ export class Display_Pipeline extends Component {
 
                     if (this.state.id === pipe) {
                         data.push(
-                           <td className={'pipeline_thread'}><button id={pipe} style={{ backgroundColor: '#587EB8', color: 'white', fontWeight: 'bold' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe}</button></td>
+                           <td className={'pipeline_thread'}><button id={pipe} style={{ backgroundColor: '#587EB8', color: 'white' }} onClick={() => display(pipe, this.props.pipeline[pipe], pipe)} className='pipeline_button' >{pipe}</button></td>
                         )
                     } else {
                         data.push(

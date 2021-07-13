@@ -10,9 +10,9 @@ export class Visualisation_area extends Component {
 
     state = {
         first_element: this.props.pipe_data[0],
-        fetch_type: 'CSV',
-       
-        plot_type_names:[]
+        fetch_type: null,
+
+        plot_type_names: []
     }
 
     componentDidUpdate(prevProps) {
@@ -23,17 +23,17 @@ export class Visualisation_area extends Component {
 
     render() {
 
-        const handle_links = (file_link,file_name) =>{
+        const handle_links = (file_link, file_name) => {
             if (this.state.first_element === file_link) {
-                return <a className="first_element_scroler" style={{ color: 'red' }}><li className="first_element_scroler">{file_name}</li></a>
-                
+                return <a className="first_element_scroler" style={{ color: '#9F7FDA' }}><li className="first_element_scroler">{file_name}</li></a>
+
             } else {
                 return <a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>
-                
+
             }
         }
 
-        const html_handle = (ext,file_link,file_name,col,bck_col) =>{
+        const html_handle = (ext, file_link, file_name, col, bck_col) => {
             if (ext === 'html') {
                 return (
                     <td >
@@ -54,134 +54,149 @@ export class Visualisation_area extends Component {
                         </div>
                     </td>
                 )
-        }else return null
+            } else return null
         }
 
 
-        const pdf_handle = (ext,file_link,file_name,col,bck_col) =>{
+        const pdf_handle = (ext, file_link, file_name, col, bck_col) => {
             if (ext === 'pdf') {
                 return (
                     <td>
-                            <div className={"row"}>
-                                {/* <div className={'col-1'}>
+                        <div className={"row"}>
+                            {/* <div className={'col-1'}>
                                     <a href={`info#${this.props.pipe}`}>
                                         <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
                                     </a>
                                 </div> */}
-                                <div className={'col-11'}>
-                                    <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
-                                </div>
+                            <div className={'col-11'}>
+                                <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                            </div>
 
+                        </div>
+                        <div className={"row"}>
+                            <div className={'col'}>
+                                <a target="_blank" href={file_link}>
+                                    <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor: bck_col, height: 260, padding: 5 }}>
+                                        <Document file={file_link}>
+                                            <Page pageNumber={1} width={210} height={210} />
+                                        </Document>
+                                    </Card>
+                                </a>
                             </div>
-                            <div className={"row"}>
-                                <div className={'col'}>
-                                    <a target="_blank" href={file_link}>
-                                        <Card variant="outlined" className={'PDF box'} style={{ "width": 220, backgroundColor: bck_col, height: 260, padding: 5 }}>
-                                            <Document file={file_link}>
-                                                <Page pageNumber={1} width={210} height={210} />
-                                            </Document>
-                                        </Card>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
+                        </div>
+                    </td>
                 )
-        }else return <Fragment/>
+            } else return <Fragment />
         }
 
-        const csv_handle = (ext,file_link,file_name,col,bck_col) =>{
+        const csv_handle = (ext, file_link, file_name, col, bck_col) => {
             if (ext === 'tsv') {
                 return (
                     <Fragment>
                         <CSV_Display pipe={this.props.pipe} link={file_link} />
                     </Fragment>
                 )
-        }else return null
+            } else return null
         }
 
-        const jpg_png_handle = (ext,file_link,file_name,col,bck_col) =>{
+        const jpg_png_handle = (ext, file_link, file_name, col, bck_col) => {
             if (ext === 'png' || ext === 'jpeg') {
                 return (
                     <td >
-                    <div className={"row"}>
-                        {/* <div className={'col-1'}>
+                        <div className={"row"}>
+                            {/* <div className={'col-1'}>
                             <a href={`info#${this.props.pipe}`}>
                                 <img style={{ width: '15px', height: 'auto' }} src={InfoLogo} alt="i" />
                             </a>
                         </div> */}
-                        <div className={'col-11'}>
-                            <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                            <div className={'col-11'}>
+                                <h2 className='title_cards' style={{ color: col }}>{file_name}</h2>
+                            </div>
                         </div>
-                    </div>
-                    <div className={"row"}>
-                        <div className={'col'}>
-                            <a target="_blank" href={file_link}>
-                                <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
-                                    <img src={file_link} />
-                                </Card>
-                            </a>
+                        <div className={"row"}>
+                            <div className={'col'}>
+                                <a target="_blank" href={file_link}>
+                                    <Card variant="outlined" className={'box'} style={{ "width": 220, height: 250, backgroundColor: bck_col, display: 'flex', justifyContent: 'center' }}>
+                                        <img src={file_link} />
+                                    </Card>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </td>
+                    </td>
                 )
-        }else return <Fragment/>
+            } else return <Fragment />
         }
 
         const change_first_element = (file_link) => {
             this.setState({ first_element: file_link })
         }
         const changeState = (state_set) => {
-            
+
             this.setState({ fetch_type: state_set })
         }
-     
-        const Nav  = (data) =>{
-   
-            
-            if (data.length>1){
-                
-                
-            return(
-                <td className={'displayNav'}>
-                <div className={'col'} style={{ width: '200px' }}>
-                    <a href={`info#${this.props.pipe}`}>
-                        <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
-                    </a>
 
-                    <div className={'navArea'}>
-                        {data}
-                    </div>
+        const Nav = (data) => {
 
-                </div>
-            </td>
-            )
+
+            if (data.length > 1) {
+
+
+                return (
+                    <td className={'displayNav'}>
+                        <div className={'col'} style={{ width: '200px' }}>
+                            <a href={`info#${this.props.pipe}`}>
+                                <img style={{ width: '20px', height: 'auto' }} src={InfoLogo} alt="i" /> Info
+                            </a>
+
+                            <div className={'navArea'}>
+                                {data}
+                            </div>
+
+                        </div>
+                    </td>
+                )
+            }
+            else {
+                // nav is not required if oly one entry
+                return <Fragment />
+            }
         }
-        else{
-            // nav is not required if oly one entry
-            return <Fragment/>
-        }
-        }
-        const Plot_Types = (plot_types) =>{
-            
+        const Plot_Types = (plot_types) => {
+
             let data = []
-            if (plot_types){
-                
-                plot_types.map(typ=>{
-                    
-                    data.push(<button onClick={() => changeState(typ)}>{typ}</button>)
+            if (plot_types) {
+                let typ1 = this.state.fetch_type
+                plot_types.map(typ => {
+                    if (this.state.fetch_type === null) {
+                        typ1 = plot_types[0]
+                    }
+
+                    if (typ1 === typ) {
+                        data.push(<button className={'btn btn-primary'} style={{ padding: '2px', margin: '2px', backgroundColor: '#9F7FDA' }} onClick={() => changeState(typ)}>{typ}</button>)
+
+                    } else {
+                        data.push(<button className={'btn btn-primary'} style={{ padding: '2px', margin: '2px' }} onClick={() => changeState(typ)}>{typ}</button>)
+
+                    }
                 })
-                
+
             }
             return (<div>{data}</div>)
-           
+
         }
 
-        const ShowPlots = () => {
+        const ShowPlots = ({ plot_types }) => {
             // this should be able to handle all - csv , png, pdf files
+            let fech_type = this.state.fetch_type
+            if (plot_types) {
+                if (!fech_type) {
+                    fech_type = plot_types[0]
+                }
+            }
 
             let data_visiualisations = []
             let data_types = []
-            let List_of_elements ={}
+            let List_of_elements = {}
             let List_of_keys = []
 
             let count = 0
@@ -198,8 +213,8 @@ export class Visualisation_area extends Component {
                 let col
                 let bck_col
                 if (count === 0) {
-                    col = 'red'
-                    bck_col = 'red'
+                    col = '#9F7FDA'
+                    bck_col = '#9F7FDA'
                 } else {
                     col = 'black'
                     bck_col = 'white'
@@ -219,39 +234,156 @@ export class Visualisation_area extends Component {
                 file_name = file_name.replaceAll('_', ' ')
 
 
-                count += 1
-                if (this.props.pipe === 'Fetch Pipeline' && this.state.fetch_type ==='CSV') {
-                    let data = csv_handle(ext,file_link,file_name,col,bck_col)
-                    if (data){
+
+                if (this.props.pipe === 'Fetch Pipeline' && fech_type === 'CSV') {
+                    let data = csv_handle(ext, file_link, file_name, col, bck_col)
+                    if (data) {
                         data_visiualisations.push(data)
-                        List_of_elements[file_name]=handle_links(file_link)
+                        List_of_elements[file_name] = handle_links(file_link, file_name)
                         List_of_keys.push(file_name)
+                        count += 1
                     }
 
-                }else if (this.props.pipe === 'Fetch Pipeline' && this.state.fetch_type ==='htmls') {
-                    let data =html_handle(ext,file_link,file_name,col,bck_col)
-                    if (data){
+                } else if (this.props.pipe === 'Fetch Pipeline' && fech_type === 'htmls') {
+                    let data = html_handle(ext, file_link, file_name, col, bck_col)
+                    if (data) {
                         data_visiualisations.push(data)
-                        List_of_elements[file_name]=handle_links(file_link)
-                        
+                        List_of_elements[file_name] = handle_links(file_link, file_name)
+
                         List_of_keys.push(file_name)
+                        count += 1
                     }
                 }
-                else{
-                    data_visiualisations.push(html_handle(ext,file_link,file_name,col,bck_col))
-                    data_visiualisations.push(jpg_png_handle(ext,file_link,file_name,col,bck_col))
-                    data_visiualisations.push(pdf_handle(ext,file_link,file_name,col,bck_col))
-                    data_visiualisations.push(csv_handle(ext,file_link,file_name,col,bck_col))
-                    List_of_elements[file_name]=handle_links(file_link,file_name)
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'mapping score umap') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'mapping score vln') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'ncells by type') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'prediction score umap') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'prediction score vln') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'query umap') {
+                    // else if (this.props.pipe === 'Cell-type assignment'){
+                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
+                    // }
+                    const typ3=fech_type.replaceAll(' ', '_')
+
+
+                    if (file_link.includes(typ3)){
+                        
+                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
+                        if (data) {
+                            data_visiualisations.push(data)
+                            List_of_elements[file_name] = handle_links(file_link, file_name)
+
+                            List_of_keys.push(file_name)
+                            count += 1
+                        }
+                    }
+                }
+                else {
+                    data_visiualisations.push(html_handle(ext, file_link, file_name, col, bck_col))
+                    data_visiualisations.push(jpg_png_handle(ext, file_link, file_name, col, bck_col))
+                    data_visiualisations.push(pdf_handle(ext, file_link, file_name, col, bck_col))
+                    data_visiualisations.push(csv_handle(ext, file_link, file_name, col, bck_col))
+                    List_of_elements[file_name] = handle_links(file_link, file_name)
                     List_of_keys.push(file_name)
+                    count += 1
                 }
 
 
             }
 
             )
-            let List_of_elements2=[]
-            List_of_keys.sort().map(key1=>{
+            let List_of_elements2 = []
+            List_of_keys.sort().map(key1 => {
                 List_of_elements2.push(List_of_elements[key1])
             })
 
@@ -272,13 +404,13 @@ export class Visualisation_area extends Component {
 
 
 
-        let plot_types=null
+        let plot_types = null
         if (this.props.pipe === 'Fetch Pipeline') {
-            plot_types= ['CSV','htmls']
-        } else if (this.props.pipe === 'Cell-type assignment'){
-            plot_types= ['CSV','htmls']
+            plot_types = ['CSV', 'htmls']
+        } else if (this.props.pipe === 'Cell-type assignment') {
+            plot_types = ['mapping score umap', 'mapping score vln', 'ncells by type', 'prediction score umap', 'prediction score vln', 'query umap']
         }
-        
+
         return (
 
             <div className='VisualisationArea'>
@@ -286,7 +418,7 @@ export class Visualisation_area extends Component {
 
                 <div class="row align-items-start">
                     <div className={'col'}>
-                        <ShowPlots />
+                        <ShowPlots plot_types={plot_types} />
                     </div>
 
                 </div>
