@@ -17,7 +17,7 @@ export class Visualisation_area extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.pipe_data[0] !== this.props.pipe_data[0]) {
-            this.setState({ first_element: this.props.pipe_data[0] })
+            this.setState({ first_element: this.props.pipe_data[0],fetch_type: null })
         }
     }
 
