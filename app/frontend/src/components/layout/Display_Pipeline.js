@@ -71,8 +71,6 @@ export class Display_Pipeline extends Component {
                             <img className={'bulett'} src={Bullett} alt="React Logo" />
                         </div>
                     </div>
-
-
                 </div>
                 <div>
                         {this.state.visualisation_data ? <Visualisation_area pipe_data={this.state.visualisation_data} pipe={this.state.pipe} /> : <Fragment />}

@@ -366,6 +366,7 @@ iframe {
 
 .VisualisationArea{
   max-height: 500px;
+  min-height: 300px;
   width:100%; 
   overflow-y: scroll;
   overflow-x: scroll;

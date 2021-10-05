@@ -92,7 +92,7 @@ export class Visualisation_area extends Component {
         const csv_handle = (ext, file_link, file_name, col, bck_col) => {
             if (ext === 'tsv') {
                 return (
-                    <Fragment>
+                    <Fragment >
                         <CSV_Display pipe={this.props.pipe} link={file_link} />
                     </Fragment>
                 )
@@ -208,9 +208,12 @@ export class Visualisation_area extends Component {
             const data_set_start = data_all.slice(0, idx)
             const data_set_end = data_all.slice(idx)
             const data_set = data_set_end.concat(data_set_start)
-
+            
+            let nr_csvs=0
             data_set.map(file_link => {
                 let col
+                
+                
                 let bck_col
                 if (count === 0) {
                     col = '#9F7FDA'
@@ -243,6 +246,7 @@ export class Visualisation_area extends Component {
                         List_of_keys.push(file_name)
                         count += 1
                     }
+                    
 
                 } else if (this.props.pipe === 'Fetch Pipeline' && fech_type === 'htmls') {
                     let data = html_handle(ext, file_link, file_name, col, bck_col)
@@ -372,7 +376,19 @@ export class Visualisation_area extends Component {
                     data_visiualisations.push(html_handle(ext, file_link, file_name, col, bck_col))
                     data_visiualisations.push(jpg_png_handle(ext, file_link, file_name, col, bck_col))
                     data_visiualisations.push(pdf_handle(ext, file_link, file_name, col, bck_col))
-                    data_visiualisations.push(csv_handle(ext, file_link, file_name, col, bck_col))
+                    
+                    if (ext==='tsv'){
+                        if(nr_csvs>0){
+                            
+                        }else{
+                            
+                            data_visiualisations.push(csv_handle(ext, file_link, file_name, col, bck_col))
+                        }
+                        
+                        nr_csvs+=1
+                        
+                    }
+                    
                     List_of_elements[file_name] = handle_links(file_link, file_name)
                     List_of_keys.push(file_name)
                     count += 1
