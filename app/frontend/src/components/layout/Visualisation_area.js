@@ -6,6 +6,8 @@ import InfoLogo from '../../../media_files/Asset_2.svg';
 import { Fragment } from 'react';
 import { Image_to_canvas } from "./Image_to_canvas"
 
+
+
 export class Visualisation_area extends Component {
 
     state = {
@@ -24,8 +26,9 @@ export class Visualisation_area extends Component {
     render() {
 
         const handle_links = (file_link, file_name) => {
+            
             if (this.state.first_element === file_link) {
-                return <a className="first_element_scroler" style={{ color: '#9F7FDA' }}><li className="first_element_scroler">{file_name}</li></a>
+                return (<p><a className="first_element_scroler" style={{ color: '#9F7FDA' }}><li className="first_element_scroler">{file_name}</li></a><a href={file_link} download><button type="button" class="btn btn-primary btn-sm" >Download</button></a></p>)
 
             } else {
                 return <a className="first_element_scroler" onClick={() => change_first_element(file_link)}><li className="first_element_scroler">{file_name}</li></a>
@@ -93,6 +96,7 @@ export class Visualisation_area extends Component {
             if (ext === 'tsv') {
                 return (
                     <Fragment >
+                        
                         <CSV_Display pipe={this.props.pipe} link={file_link} />
                     </Fragment>
                 )
@@ -162,7 +166,7 @@ export class Visualisation_area extends Component {
             }
         }
         const Plot_Types = (plot_types) => {
-
+            // this is the nav for the types - such as CSV, Html and other active plot types
             let data = []
             if (plot_types) {
                 let typ1 = this.state.fetch_type
@@ -172,7 +176,9 @@ export class Visualisation_area extends Component {
                     }
 
                     if (typ1 === typ) {
-                        data.push(<button className={'btn btn-primary'} style={{ padding: '2px', margin: '2px', backgroundColor: '#9F7FDA' }} onClick={() => changeState(typ)}>{typ}</button>)
+                        data.push(
+                        <button className={'btn btn-primary'} style={{ padding: '2px', margin: '2px', backgroundColor: '#9F7FDA' }} onClick={() => changeState(typ)}>{typ}</button>
+                        )
 
                     } else {
                         data.push(<button className={'btn btn-primary'} style={{ padding: '2px', margin: '2px' }} onClick={() => changeState(typ)}>{typ}</button>)
@@ -258,120 +264,47 @@ export class Visualisation_area extends Component {
                         count += 1
                     }
                 }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'mapping score umap') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
-                    const typ3=fech_type.replaceAll(' ', '_')
 
+                else if (this.props.pipe === 'Cell-type assignment') {
+
+                    const typ3=fech_type.replaceAll(' ', '_')
+                    
 
                     if (file_link.includes(typ3)){
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
+                        
+                            data_visiualisations.push(html_handle(ext, file_link, file_name, col, bck_col))
+                            data_visiualisations.push(jpg_png_handle(ext, file_link, file_name, col, bck_col))
+                            data_visiualisations.push(pdf_handle(ext, file_link, file_name, col, bck_col))
+                            
                             List_of_elements[file_name] = handle_links(file_link, file_name)
 
                             List_of_keys.push(file_name)
                             count += 1
-                        }
+                        
                     }
                 }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'mapping score vln') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
+                else if (this.props.pipe === 'Cellbender') {
+                    
                     const typ3=fech_type.replaceAll(' ', '_')
-
-
                     if (file_link.includes(typ3)){
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
-                            List_of_elements[file_name] = handle_links(file_link, file_name)
-
-                            List_of_keys.push(file_name)
-                            count += 1
-                        }
-                    }
-                }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'ncells by type') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
-                    const typ3=fech_type.replaceAll(' ', '_')
-
-
-                    if (file_link.includes(typ3)){
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
-                            List_of_elements[file_name] = handle_links(file_link, file_name)
-
-                            List_of_keys.push(file_name)
-                            count += 1
-                        }
-                    }
-                }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'prediction score umap') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
-                    const typ3=fech_type.replaceAll(' ', '_')
-
-
-                    if (file_link.includes(typ3)){
+                        data_visiualisations.push(html_handle(ext, file_link, file_name, col, bck_col))
+                        data_visiualisations.push(jpg_png_handle(ext, file_link, file_name, col, bck_col))
+                        data_visiualisations.push(pdf_handle(ext, file_link, file_name, col, bck_col))
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
-                            List_of_elements[file_name] = handle_links(file_link, file_name)
-
-                            List_of_keys.push(file_name)
-                            count += 1
-                        }
-                    }
-                }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'prediction score vln') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
-                    const typ3=fech_type.replaceAll(' ', '_')
-
-
-                    if (file_link.includes(typ3)){
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
-                            List_of_elements[file_name] = handle_links(file_link, file_name)
+                        List_of_elements[file_name] = handle_links(file_link, file_name)
 
-                            List_of_keys.push(file_name)
-                            count += 1
-                        }
-                    }
-                }
-                else if (this.props.pipe === 'Cell-type assignment' && fech_type === 'query umap') {
-                    // else if (this.props.pipe === 'Cell-type assignment'){
-                    //     plot_types= ['mapping score umap','mapping score vln','ncells by type','prediction score umap','prediction score vln','query umap']
-                    // }
-                    const typ3=fech_type.replaceAll(' ', '_')
-
-
-                    if (file_link.includes(typ3)){
+                        List_of_keys.push(file_name)
+                        count += 1
                         
-                        let data = pdf_handle(ext, file_link, file_name, col, bck_col)
-                        if (data) {
-                            data_visiualisations.push(data)
-                            List_of_elements[file_name] = handle_links(file_link, file_name)
-
-                            List_of_keys.push(file_name)
-                            count += 1
-                        }
                     }
                 }
+
+
+
                 else {
                     data_visiualisations.push(html_handle(ext, file_link, file_name, col, bck_col))
                     data_visiualisations.push(jpg_png_handle(ext, file_link, file_name, col, bck_col))
@@ -419,12 +352,13 @@ export class Visualisation_area extends Component {
 
 
 
-
         let plot_types = null
         if (this.props.pipe === 'Fetch Pipeline') {
             plot_types = ['CSV', 'htmls']
         } else if (this.props.pipe === 'Cell-type assignment') {
-            plot_types = ['mapping score umap', 'mapping score vln', 'ncells by type', 'prediction score umap', 'prediction score vln', 'query umap']
+            plot_types = ['ncells by type', 'prediction score umap', 'prediction score vln', 'query umap']
+        }else if (this.props.pipe === 'Cellbender') {
+            plot_types = ['barcode vs total counts', 'cellranger vs cellbender', 'difference-boxplot','ambient signature', ]
         }
 
         return (

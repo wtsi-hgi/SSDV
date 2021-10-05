@@ -139,7 +139,7 @@ export class CSV_Display extends Component {
             if (this.state.display_type === 'table') {
                 return (
                     <Fragment>
-
+                        <p>Click on the header to visualise bar chart!</p>
                         <table class="table table-striped" style={{ width: "100%" }}>
                             <thead class="thead-light">
                                 <tr id={'csv_head'}>{header}</tr>
