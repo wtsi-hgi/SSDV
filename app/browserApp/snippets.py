@@ -18,6 +18,7 @@ def hello_world(request):
         # here list alll the drectories that are present in the dedicated storage folder
         dataset={}
         for experiment in glob(f'{MEDIA_ROOT}/*'):
+            Unix_timestamp_modified =os.path.getmtime(experiment) 
             Experiment_Name =  (experiment.split('/')[-1])
             dataset[Experiment_Name] = {}
             for pipeline in glob(f'{experiment}/*'):
@@ -29,5 +30,5 @@ def hello_world(request):
                     except:
                         dataset[Experiment_Name][Pipeline_Name]=[]
                         dataset[Experiment_Name][Pipeline_Name].append(plot_name)
-     
+            dataset[Experiment_Name]['Unix_timestamp_modified']=Unix_timestamp_modified
         return Response({"dataset":dataset})

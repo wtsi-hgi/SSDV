@@ -27,12 +27,11 @@ export class Display_Pipeline extends Component {
         const Button_Display = () => {
             let data = []
             let count = 0
-            let order = ['Fetch Pipeline', 'Cellbender', 'Deconvolution', 'QC metrics','Clustering','Cell-type assignment']
+            let order = ['Fetch Pipeline', 'Cellbender', 'Deconvolution', 'QC metrics','Clustering','Cell-type assignment','Summary']
 
             order.map(pipe => {
 
                 if (typeof this.props.pipeline[pipe] !== 'undefined') {
-
 
                     if (this.state.id === pipe) {
                         data.push(

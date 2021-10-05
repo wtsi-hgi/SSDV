@@ -35,6 +35,7 @@ class DisplayFiles extends Component {
     render() {
 
         let filtered_array ={}
+
         this.props.Files.map(row=>{
             
             // these are top level organisational elements

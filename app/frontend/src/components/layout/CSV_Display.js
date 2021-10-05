@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import Papa from 'papaparse';
-import { CsvToHtmlTable } from 'react-csv-to-table';
-
 import { Fragment } from 'react';
 import Barchart from '../charts/Barchart';
-// import ReactHtmlParser from 'react-html-parser'; 
-import InfoLogo from '../../../media_files/Asset_2.svg';
-import { useScreenshot } from "use-react-screenshot";
+
 
 export class CSV_Display extends Component {
     labels_not_to_display_in_chart = ['experiment_id', 'sanger_sample_id', 'irods_cellranger_path',]
@@ -103,10 +99,10 @@ export class CSV_Display extends Component {
                         if (!exclude.includes(row_count)) {
                             if (row_count == 0) { className1 = 'overflowTableCell' }else{className1 = 'overflowTableCell' }
                             if (this.labels_not_to_display_in_chart.includes(td1)) {
-                                header.push(<th className={className1}>{td1}</th>)
+                                header.push(<th className={`${className1} sticky`}>{td1}</th>)
 
                             } else {
-                                header.push(<th className={className1}><a className={'first_element_scroler'} onClick={() => Show_Barchart(td1)}>{td1}</a></th>)
+                                header.push(<th className={`${className1} sticky`}><a className={'first_element_scroler'} onClick={() => Show_Barchart(td1)}>{td1}</a></th>)
 
                             }
                         }

@@ -24,11 +24,11 @@ export class Barchart extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 <Bar
                 data={this.state.chartData}
-     
-                // options={{ maintainAspectRatio: false }}
+            
+                options={{ maintainAspectRatio: false,indexAxis:'y' }}
             />
             </div>
         )

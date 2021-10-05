@@ -347,6 +347,13 @@ iframe {
   
 }
 
+.sticky{
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+
+}
+
 .title_cards{
   width: 220px;
   max-height: 30px;
@@ -358,9 +365,8 @@ iframe {
 
 
 .VisualisationArea{
-  max-height: 350px;
+  max-height: 500px;
   width:100%; 
-  
   overflow-y: scroll;
   overflow-x: scroll;
   margin-left: 0em;
