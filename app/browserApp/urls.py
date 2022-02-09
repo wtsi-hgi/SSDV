@@ -2,7 +2,7 @@ from rest_framework import routers
 from .views import UserViewSet, GroupViewSet,Existing_File_Viewset
 from django.urls import re_path, path, include
 from django.conf.urls import url
-from .snippets import hello_world
+from .snippets import hello_world,json_retrieve
 
 router=routers.DefaultRouter()
 router.register('user',UserViewSet,'user')
@@ -15,6 +15,7 @@ urlpatterns = [
     # ...
     # url(r'upload', FileView.as_view(), name='file-upload'),
     path('snippets/', hello_world),
+    path('json/', json_retrieve),
     re_path('', include((router.urls))),
 
 ]

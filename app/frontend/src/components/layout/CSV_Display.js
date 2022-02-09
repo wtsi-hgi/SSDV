@@ -19,7 +19,12 @@ export class CSV_Display extends Component {
 
         this.getData = this.getData.bind(this);
     }
-
+    componentDidUpdate(prevProps){
+        if (prevProps.link !== this.props.link) {
+            this.getCsvData(this.props.link);
+        }
+        
+    }
     componentWillMount() {
         this.getCsvData(this.props.link);
     }
@@ -54,7 +59,6 @@ export class CSV_Display extends Component {
             this.setState({ display_type: 'table' })
         }
         const Show_Barchart = (title_of_barchart) => {
-            // alert(title_of_barchart)
             let result = this.state.data
             const data = result[0]
             const idx = data.indexOf(title_of_barchart)
@@ -62,17 +66,14 @@ export class CSV_Display extends Component {
             let data_for_barchart = []
             let labels_for_barchart = []
             for (let i = 1; i < all_data.length; i++) {
-
                 try {
                     let counts = result[i][idx]
-
-                    counts = parseFloat(counts.replace('%', ''))
+                    counts = parseFloat(counts.replace('%', '').replace(',', ''))
                     data_for_barchart.push(counts)
                     labels_for_barchart.push(result[i][0])
                 } catch (error) {
 
                 }
-
             }
 
             this.setState({
@@ -84,8 +85,6 @@ export class CSV_Display extends Component {
         }
 
         if (this.state.data) {
-
-
             let body = []
             let header = []
             let count = 0
@@ -103,7 +102,6 @@ export class CSV_Display extends Component {
 
                             } else {
                                 header.push(<th className={`${className1} sticky`}><a className={'first_element_scroler'} onClick={() => Show_Barchart(td1)}>{td1}</a></th>)
-
                             }
                         }
                         row_count += 1
@@ -156,7 +154,6 @@ export class CSV_Display extends Component {
                     <Fragment>
                         <button onClick={() => return_to_table()}>Back to table</button>
                         <Barchart
-                            
                             data_for_barchart={this.state.data_for_barchart}
                             labels_for_barchart={this.state.labels_for_barchart}
                             title_of_barchart={this.state.title_of_barchart}

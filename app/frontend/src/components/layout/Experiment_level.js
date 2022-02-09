@@ -8,7 +8,7 @@ export class Experiment_level extends Component {
     state={
         experiments:false,
         loading:true,
-        sort:'Alphabetical'
+        sort:'Chronological'
     }
 
     componentDidMount() {
@@ -18,6 +18,7 @@ export class Experiment_level extends Component {
           const protein_data = res.data;
           this.setState({'experiments':protein_data,'loading':false})
         })
+
     }
     change_state(){
         if(this.state.sort==='Alphabetical'){
@@ -55,7 +56,7 @@ export class Experiment_level extends Component {
             }
 
             
-
+            
             Dataset.map(exp1=>{
                 g.push(<Display_Pipeline pipeline={this.state.experiments.dataset[exp1]} exp1={exp1}/>)
             })

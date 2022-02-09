@@ -19,12 +19,10 @@ class App extends Component {
         <Router>
         <Fragment>
             <Header/> 
-            
               <div className={"body_content"}>   
               <Switch>
                 <Route exact path={`${PREFIX}/`} component={Experiment_level}/>
                 <Route exact path={`${PREFIX}/info`} component={Descriptions}/>
-                
               </Switch>
             </div>
             <Footer/>
