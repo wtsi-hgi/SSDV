@@ -91,7 +91,14 @@ iframe {
   background-color: whitesmoke;
 }
 
+.fixed_pos{
+  top:0;
+  right:0;
+}
 
+.ib {
+  display: inline-block;
+}
 #head{
   background-image: linear-gradient(to right, #9F7FDA , #4965A7);
   margin: 0em;
@@ -138,6 +145,9 @@ iframe {
   overflow-x: scroll;
 }
 
+.box2{
+  display: flex;
+}
 
 .box {
 
@@ -301,6 +311,22 @@ iframe {
   z-index: 10;
   
 }
+
+#infoi2 {
+  padding: -5px;
+  width: 100%;
+  margin: -3px;
+  background-image: linear-gradient(to right, #9F7FDA , #4965A7);
+  /* padding-left: 40px; */
+  max-height: 100px;
+  /* float:right; */
+  
+  /* display: grid; */
+  /* grid-auto-flow: column; */
+  z-index: 10;
+  
+}
+
 #th1{
   float: left;
 }
@@ -371,7 +397,7 @@ iframe {
 
 
 .VisualisationArea{
-  max-height: 500px;
+  max-height: 700px;
   min-height: 300px;
   width:100%; 
   overflow-y: scroll;

@@ -19,7 +19,7 @@ export class Descriptions extends Component {
     render() {
 
         return (
-            <div className="box">
+            <div className="box" style={{marginTop:'40px'}}>
                 <div className={'paragraph_desc'}>
                     <h1 className={'title_description'} id="Summary">Summary</h1>
                 <img className={'center'} style={{width:'60%'}} src={PipePic1}/>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Fragment } from 'react'
 import Bullett from '../../../media_files/Asset_1.svg';
-
+import Form from 'react-bootstrap/Form'
 
 import Visualisation_area from './Visualisation_area';
 
@@ -86,10 +86,34 @@ export class Display_Pipeline extends Component {
             return data
         }
 
+        const Checkboxes =()=>{
+            if (this.props.checked){
+                return(
+                        <Form.Check style={{margin:'0px',padding:'0px',marginBottom:'-15px'}}
+                            type="switch"
+                            id={this.props.exp1}
+                            label=""
+                            checked
+                            onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
+                        />
+                    )
+            }else{
+                return(
+                        <Form.Check 
+                            type="switch"
+                            id={this.props.exp1}
+                            label=""
+                            onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
+                        />
+                    )               
+            }
+        }
+
         return (
             <Fragment>
-                <div>
-                    <h1 style={{ zIndex: 1 }}>{this.props.exp1}</h1>
+                <div style={{width:"95%"}}>
+                    
+                    <div style={{paddingLeft:'15px'}}><h1 style={{ zIndex: 1 }}><Checkboxes/>{this.props.exp1}</h1></div>
                     <div id="container">
                         <div id="infoi">
                             <table >

@@ -166,7 +166,6 @@ export class Visualisation_area extends Component {
             } 
         }
 
-        
         const Nav = (data) => {
             // this is a side bar navigation for when we want to swap things arround.
                 if(this.state.open_close==='open'){

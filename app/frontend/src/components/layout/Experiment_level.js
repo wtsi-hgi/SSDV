@@ -1,25 +1,20 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import { Fragment } from 'react';
 import Display_Pipeline from './Display_Pipeline';
-import { PREFIX } from '../../actions/types';
+
+
 export class Experiment_level extends Component {
 
     state={
-        experiments:false,
+        experiments:this.props.protein_data.dataset,
         loading:true,
-        sort:'Chronological'
+        sort:'Chronological',
+        project:null,
+        checkBox_values:[]
     }
+    
+    
 
-    componentDidMount() {
-        
-        axios.get(`${PREFIX}/api_scrna/snippets`)
-        .then(res => {
-          const protein_data = res.data;
-          this.setState({'experiments':protein_data,'loading':false})
-        })
-
-    }
     change_state(){
         if(this.state.sort==='Alphabetical'){
             this.setState({sort:'Chronological'})
@@ -29,23 +24,21 @@ export class Experiment_level extends Component {
     }
 
 
+
     render() {
 
         const Display_plots =()=>{
             // console.log(pipeline)
             let g = [] 
-            let data = this.state.experiments.dataset
+            let data = this.props.protein_data.dataset.all_experiment_data
             // sorting alphabetically
-            let Dataset = Object.keys(this.state.experiments.dataset).sort()
+            let Dataset = Object.keys(this.props.protein_data.dataset.all_experiment_data).sort()
             // sorting based on timestamp
-
             let sortable = [];
-            
             if (this.state.sort==='Chronological'){
-                Object.keys(this.state.experiments.dataset).map(key=>{
-                    sortable.push([key,this.state.experiments.dataset[key]['Unix_timestamp_modified']]);
+                Object.keys(this.props.protein_data.dataset.all_experiment_data).map(key=>{
+                    sortable.push([key,this.props.protein_data.dataset.all_experiment_data[key]['Unix_timestamp_modified']]);
                 })
-    
                 sortable.sort(function(a, b) {
                     return b[1] - a[1] ;
                 });
@@ -55,17 +48,26 @@ export class Experiment_level extends Component {
                 })
             }
 
-            
-            
+            let checkBox_values = this.props.checkBox_values
+            // alert(checkBox_values)
             Dataset.map(exp1=>{
-                g.push(<Display_Pipeline pipeline={this.state.experiments.dataset[exp1]} exp1={exp1}/>)
+                // this loops through each of the checkboxes and determines whether to use this for the cumulitive data generation. 
+                // if file is not available the swithch will be disabled at a switched off mode.
+                if(checkBox_values.includes(exp1)){
+                    g.push(<div className='' style={{width:'99%',paddingLeft:'8px'}}><Display_Pipeline checked={false} changeCheckboxState={this.props.changeCheckboxState} pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} exp1={exp1}/></div>
+                  )
+                }
+                else{
+                    g.push(
+                    <div className='ib' style={{width:'99%',paddingLeft:'8px'}}>
+                      <Display_Pipeline pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} checked={true} changeCheckboxState={this.props.changeCheckboxState} exp1={exp1}/></div>
+                    )
+                }
             })
            return g
         }
         
-        
-
-        if (this.state.loading){
+        if (this.props.loading){
             return(<h2>Loading ...</h2>)
         }
         else{
