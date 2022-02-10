@@ -13,6 +13,8 @@ import axios from 'axios';
 import { PREFIX } from '../actions/types';
 import Project_Selector from "./layout/Project_Selector";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// icons are retrieved from https://feathericons.com/
+
 
 class App extends Component {
   
@@ -101,3 +103,7 @@ class App extends Component {
 export default App;
 
 ReactDOM.render(<App/>, document.getElementById('app'))
+
+
+// App has been initially written by Matiss Ozols
+

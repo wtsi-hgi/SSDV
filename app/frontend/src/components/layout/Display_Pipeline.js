@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Fragment } from 'react'
 import Bullett from '../../../media_files/Asset_1.svg';
 import Form from 'react-bootstrap/Form'
-
+import No_Data from '../../../media_files/slash.svg';
 import Visualisation_area from './Visualisation_area';
 
 export class Display_Pipeline extends Component {
@@ -87,25 +87,37 @@ export class Display_Pipeline extends Component {
         }
 
         const Checkboxes =()=>{
-            if (this.props.checked){
+            if (this.props.checked==='not_available'){
                 return(
-                        <Form.Check style={{margin:'0px',padding:'0px',marginBottom:'-15px'}}
-                            type="switch"
-                            id={this.props.exp1}
-                            label=""
-                            checked
-                            onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
-                        />
-                    )
+                    <Form.Check style={{margin:'0px',padding:'0px',marginBottom:'-15px'}}
+                    type="switch"
+                    id={this.props.exp1}
+                    label=""
+                    disabled
+                    onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
+                />    
+                )
             }else{
-                return(
-                        <Form.Check 
-                            type="switch"
-                            id={this.props.exp1}
-                            label=""
-                            onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
-                        />
-                    )               
+                if (this.props.checked){
+                    return(
+                            <Form.Check style={{margin:'0px',padding:'0px',marginBottom:'-15px'}}
+                                type="switch"
+                                id={this.props.exp1}
+                                label=""
+                                checked
+                                onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
+                            />
+                        )
+                }else{
+                    return(
+                            <Form.Check 
+                                type="switch"
+                                id={this.props.exp1}
+                                label=""
+                                onChange={()=>this.props.changeCheckboxState(this.props.exp1)}
+                            />
+                        )               
+                }
             }
         }
 
@@ -123,7 +135,8 @@ export class Display_Pipeline extends Component {
                             </table>
                         </div>
                         <div id="navi">
-                            <img className={'bulett'} src={Bullett} alt="React Logo" />
+                        <img className={'bulett'} src={Bullett} alt="React Logo" />
+                            
                         </div>
                     </div>
                 </div>

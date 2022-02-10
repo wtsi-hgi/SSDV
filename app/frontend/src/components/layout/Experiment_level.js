@@ -53,16 +53,51 @@ export class Experiment_level extends Component {
             Dataset.map(exp1=>{
                 // this loops through each of the checkboxes and determines whether to use this for the cumulitive data generation. 
                 // if file is not available the swithch will be disabled at a switched off mode.
-                if(checkBox_values.includes(exp1)){
-                    g.push(<div className='' style={{width:'99%',paddingLeft:'8px'}}><Display_Pipeline checked={false} changeCheckboxState={this.props.changeCheckboxState} pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} exp1={exp1}/></div>
-                  )
+                // alert(exp1)
+                let available_for_cummulitive_stats=false;
+                try{
+                    let d = this.props.protein_data.dataset.all_experiment_data[exp1]['Summary']['plots']
+                    let substring='Donor_Report.tsv'
+ 
+
+                    const matches = d.filter(element => {
+                        if (element.indexOf(substring) !== -1) {
+                          return true;
+                        }
+                      });
+                    if (matches.length>0){
+                        available_for_cummulitive_stats=true
+                    }else{
+                        available_for_cummulitive_stats=false
+                    }
+                    
+                        
+              
+                    
+                }catch{
+                    // Here the Summary files are not available, hence will not be used in aggregation statistics.
+                    available_for_cummulitive_stats=false
                 }
-                else{
+                
+                if (available_for_cummulitive_stats){
+                    
+                    if(checkBox_values.includes(exp1)){
+                        g.push(<div className='' style={{width:'99%',paddingLeft:'8px'}}><Display_Pipeline checked={false} changeCheckboxState={this.props.changeCheckboxState} pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} exp1={exp1}/></div>
+                      )
+                    }
+                    else{
+                        g.push(
+                        <div className='ib' style={{width:'99%',paddingLeft:'8px'}}>
+                          <Display_Pipeline pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} checked={true} changeCheckboxState={this.props.changeCheckboxState} exp1={exp1}/></div>
+                        )
+                    }
+                }else{
                     g.push(
-                    <div className='ib' style={{width:'99%',paddingLeft:'8px'}}>
-                      <Display_Pipeline pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} checked={true} changeCheckboxState={this.props.changeCheckboxState} exp1={exp1}/></div>
-                    )
+                        <div className='ib' style={{width:'99%',paddingLeft:'8px'}}>
+                          <Display_Pipeline pipeline={this.props.protein_data.dataset.all_experiment_data[exp1]} checked={'not_available'} changeCheckboxState={this.props.changeCheckboxState} exp1={exp1}/></div>
+                        )
                 }
+
             })
            return g
         }
