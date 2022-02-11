@@ -8,20 +8,10 @@ export class Experiment_level extends Component {
     state={
         experiments:this.props.protein_data.dataset,
         loading:true,
-        sort:'Chronological',
         project:null,
         checkBox_values:[]
     }
     
-    
-
-    change_state(){
-        if(this.state.sort==='Alphabetical'){
-            this.setState({sort:'Chronological'})
-        }else{
-            this.setState({sort:'Alphabetical'})
-        }
-    }
 
 
 
@@ -35,7 +25,7 @@ export class Experiment_level extends Component {
             let Dataset = Object.keys(this.props.protein_data.dataset.all_experiment_data).sort()
             // sorting based on timestamp
             let sortable = [];
-            if (this.state.sort==='Chronological'){
+            if (this.props.sort==='Chronological'){
                 Object.keys(this.props.protein_data.dataset.all_experiment_data).map(key=>{
                     sortable.push([key,this.props.protein_data.dataset.all_experiment_data[key]['Unix_timestamp_modified']]);
                 })
@@ -70,10 +60,6 @@ export class Experiment_level extends Component {
                     }else{
                         available_for_cummulitive_stats=false
                     }
-                    
-                        
-              
-                    
                 }catch{
                     // Here the Summary files are not available, hence will not be used in aggregation statistics.
                     available_for_cummulitive_stats=false
@@ -108,7 +94,7 @@ export class Experiment_level extends Component {
         else{
             return (
             <Fragment>
-                {this.state.sort==='Alphabetical'?<button onClick={()=>this.change_state()}>Sort Chronologicaly</button>:<button onClick={()=>this.change_state()}>Sort Alphabeticaly</button>}
+                {this.state.sort==='Alphabetical'?<button onClick={()=>this.props.change_state()}>Sort Chronologicaly</button>:<button onClick={()=>this.props.change_state()}>Sort Alphabeticaly</button>}
                 <div className="box">
                     <Display_plots/>
                 </div>

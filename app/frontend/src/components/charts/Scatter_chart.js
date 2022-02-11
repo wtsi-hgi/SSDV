@@ -9,9 +9,6 @@ export class Scatter_chart extends Component {
         }
     }
 
-
-
-
     render() {
         const UMAPs = this.state.UMAP_Data.dataset.UMAPs
         const params = this.state.UMAP_Data.dataset.params

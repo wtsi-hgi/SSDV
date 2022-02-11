@@ -26,6 +26,7 @@ class App extends Component {
       project:null,
       checkBox_values:[]
     }
+
     changeCheckboxState=(ext1)=>{
       
       
@@ -62,6 +63,14 @@ class App extends Component {
     })
   }
 
+  change_state=()=>{
+    
+    if(this.state.sort==='Alphabetical'){
+        this.setState({sort:'Chronological'})
+    }else{
+        this.setState({sort:'Alphabetical'})
+    }
+  }
 
   render() {
     if (this.state.loading){
@@ -75,15 +84,15 @@ class App extends Component {
                 <Header/> 
               </div>
               <div style={{float:'right'}}><Project_Selector Change_experiment={this.Change_experiment} protein_data={this.state.protein_data}/></div>
-                <div className={"body_content"}>   
+                <div id={"body_content"} className={"body_content"}>   
                 <Switch>
                   <Route exact path={`${PREFIX}/`}>
-                    <Experiment_level loading={this.state.loading} protein_data={this.state.protein_data} 
+                    <Experiment_level loading={this.state.loading} change_state={this.change_state} sort={this.state.sort} protein_data={this.state.protein_data} 
                       changeCheckboxState={this.changeCheckboxState} checkBox_values={this.state.checkBox_values}
                   /></Route>
 
                   <Route exact path={`${PREFIX}/Cummulitive_Stats`}>
-                    <Cumulative_Stats loading={this.state.loading} protein_data={this.state.protein_data} 
+                    <Cumulative_Stats loading={this.state.loading} sort={this.state.sort} protein_data={this.state.protein_data} 
                       checkBox_values={this.state.checkBox_values}
                   /></Route>
 

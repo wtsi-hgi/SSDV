@@ -25,7 +25,7 @@ export class Barchart extends Component {
     render() {
         return (
             <div >
-                <Bar
+            <Bar
                 data={this.state.chartData}
                 width={400}
                 height={300}

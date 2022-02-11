@@ -6,6 +6,26 @@ import os
 from glob import glob
 from backend.settings import MEDIA_ROOT,MEDIA_URL
 
+def edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column):
+    # print('metadata')
+    # metadata={}
+    All_Data_for_stats=All_Data_for_stats.to_dict()
+    try:
+       metadata[Experiment_Name][TSV_Name][column]=All_Data_for_stats
+    except:
+        try:
+            metadata[Experiment_Name][TSV_Name]={}
+            metadata[Experiment_Name][TSV_Name][column]=All_Data_for_stats
+        except:
+            try:
+                metadata[Experiment_Name]={}
+                metadata[Experiment_Name][TSV_Name]={}
+                metadata[Experiment_Name][TSV_Name][column]=All_Data_for_stats
+            except:
+                _='something went wrong, investigate this.'         
+    return metadata
+    
+
 @api_view(['GET'])
 def retrieve_files(request):
     # this function takes in the api inputs and filters the domains that the protein contains and retrieves it back to the user.
@@ -29,12 +49,43 @@ def retrieve_files(request):
             # this is where we select the specific project user is looking for.
         dataset={}
         dataset2={}
+        metadata={}
         for experiment in glob(f'{project_to_use}/*'):
             Unix_timestamp_modified =os.path.getmtime(experiment) 
             Experiment_Name =  (experiment.split('/')[-1])
             dataset[Experiment_Name] = {}
             for pipeline in glob(f'{experiment}/*'):
                 Pipeline_Name =  (pipeline.split('/')[-1])
+                # For the csv and tsv files in 'Summary' folder, we extract the numeric metadata for the experiment.
+                if(Pipeline_Name=='Summary' or Pipeline_Name=='Fetch Pipeline'):
+                    all_tsv_files =[]
+                    for root, dirs, files in os.walk(pipeline):
+                        for file in files:
+                            if file.endswith('.tsv'):
+                                all_tsv_files.append(f'{root}/{file}')
+                    # now loop through each of the tsv files and extract all the numeric data.
+                    # print('these are the summary plots')
+                    for tsv_file in all_tsv_files:
+                        # print(tsv_file)
+                        TSV_Name = tsv_file.split('/')[-1].split('.')[0]
+                        Data = pd.read_csv(tsv_file,sep='\t',index_col=0)
+                        for column in Data:
+                            All_Data_for_stats = Data[column]
+                            if (pd.to_numeric(All_Data_for_stats, errors='coerce').notnull().all()):
+                                # this is where everything is numeric.
+                                metadata = edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column)
+                            else:
+                                # if all not numeric, then replace the , and % and check again.
+                                All_Data_for_stats = All_Data_for_stats.str.replace(',','').replace('%','')
+                                if (pd.to_numeric(All_Data_for_stats, errors='coerce').notnull().all()):
+                                    metadata = edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column)
+                                
+                            
+
+
+                            All_Data_for_stats
+
+
                 # these are all the plots in the directory, since we have a sub structure, we also loop through to dettect any underlying substructures          
                 dataset[Experiment_Name][Pipeline_Name]={}
                 dataset[Experiment_Name][Pipeline_Name]['plots']=[]
@@ -48,6 +99,9 @@ def retrieve_files(request):
                         dir1 = dir[0]
                         Subdir_Name =  (dir1.split('/')[-1])
                         dataset[Experiment_Name][Pipeline_Name]['sub_dirs'][Subdir_Name]=[]
+
+
+
                         for plot_name in glob(f'{dir1}/*.*'):
                             plot_name = plot_name.replace(MEDIA_ROOT+'/',MEDIA_URL) 
                             dataset[Experiment_Name][Pipeline_Name]['sub_dirs'][Subdir_Name].append(plot_name)
@@ -61,6 +115,8 @@ def retrieve_files(request):
         dataset2['experiment_in_use']=project_in_use
         dataset2['other_available_experiments']=Other_projects
         dataset2['all_experiment_data']=dataset
+        dataset2['metadata']=metadata
+        
         return Response({"dataset":dataset2})
 
 @api_view(['GET'])
