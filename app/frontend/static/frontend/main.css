@@ -222,6 +222,17 @@ iframe {
   -ms-animation: fadeIn linear 0.2s;
 }
 
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+
 @keyframes fadeIn {
   0% {opacity:0;}
   100% {opacity:1;}

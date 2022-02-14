@@ -1,5 +1,5 @@
 // Multiplot Bar chart designrd and implemented by Matiss Ozols
-
+//this moule has been written by M.Ozols
 import React, { Component, Fragment } from 'react';
 
 export default class MultitypeMO extends Component {
@@ -26,6 +26,7 @@ export default class MultitypeMO extends Component {
     let datasets= this.props.datasets
     let distancing_between_bar_groups = 200
     const size_of_multi_axis_square=10
+
     const Labels =({labels,distancing_between_bar_groups}) =>{
         // This prop generates all the required props.
         let count=0+top_offset
@@ -80,43 +81,57 @@ export default class MultitypeMO extends Component {
     }
 
 
-    const Lines =({all_bar_backgrounds,distancing_between_bar_groups,offset,popup,extras}) =>{
+    const Lines =(all_bar_backgrounds,nr_elements_line,offset,popup,extras,line_path) =>{
         // This prop generates all the required props.
         let count=offset
         let all_labels=[]
+        // alert(offset)
+        let count_of_elems=0
+        let pos_y
+        let line_path_out=line_path
+        let color
         Object.keys(all_bar_backgrounds).map(label1=>{
             // alert(label1)
+            count_of_elems+=1
+            if(nr_elements_line===1){
+                // only 1 point in this set. Hence place it in the midle.
+                pos_y = offset+distancing_between_bar_groups/2
+            }else{
+                const count_calc = distancing_between_bar_groups/nr_elements_line
+                const count_calc_half =count_calc/2 
+                pos_y = offset-count_calc_half+count_of_elems*count_calc
+            }
+            // alert(offset)
+            // alert(nr_elements_line)
+            // alert(pos_y)
+            line_path_out = line_path_out + `L ${all_bar_backgrounds[label1]['value']+side_offset} ${pos_y}`
+             color=all_bar_backgrounds[label1]['color']
             if(popup){
                 let not_normalised_value = all_bar_backgrounds[label1]['label']
                 unique_id+=1
+                // alert(`${label1}: ${not_normalised_value}`)
                 all_labels.push(
+                    
                     <Fragment >
                     <g id={`${extras} ${label1}`} onMouseOver={() => showPopup('mypopup',`${label1}: ${not_normalised_value}`,`${extras} ${label1}`)} onMouseOut={() => hidePopup('mypopup')}>
                         
-                        <circle cx={all_bar_backgrounds[label1]['value']+side_offset} cy={count} r="5" style={{fill: all_bar_backgrounds[label1]['color']}}/>
-                        {/* <rect x={side_offset}
-                        y={count}
-                        width={all_bar_backgrounds[label1]['value']} 
-                        height={distancing_between_bar_groups}
-                    style={{fill: all_bar_backgrounds[label1]['color'], stroke: "black"}}/> */}
+                        <circle cx={all_bar_backgrounds[label1]['value']+side_offset} cy={pos_y} r="4" style={{fill: all_bar_backgrounds[label1]['color']}}/>
+
                     </g>
                     </Fragment>             
                 )
             }else{
                 all_labels.push(
                     <g>
-                        <rect x={side_offset}
-                        y={count}
-                        width={all_bar_backgrounds[label1]['value']} 
-                        height={distancing_between_bar_groups}
-                    style={{fill: all_bar_backgrounds[label1]['color'], stroke: "black"}}/>
+                        <circle cx={all_bar_backgrounds[label1]['value']+side_offset} cy={pos_y} r="5" style={{fill: all_bar_backgrounds[label1]['color']}}/>
                     </g>             
                 )
             }
             count+=distancing_between_bar_groups
         })
+
         // Now that we have a background we add in each of these boxes the bar chart boxes. - Dependant on the number, they will be thiner or less thin.
-        return(all_labels)
+        return({line_dots:all_labels,line_path_out:line_path_out,color1:color })
     }
 
     const get_number_of_elements =(all_bar_data,label1)=>{
@@ -139,6 +154,27 @@ export default class MultitypeMO extends Component {
         if(nr_elements===0){
             nr_elements=1
         }
+        return {'nr_elements':nr_elements,'labels_box':labels_box}
+    }
+
+    const get_number_of_elements_line =(all_bar_data,label1)=>{
+        let nr_elements=0
+        let labels_box =[]
+        
+        
+        Object.keys(all_bar_data).map(key1=>{
+            
+            // Here we  determine how many in total rectangles will need to display.
+            try{
+                // console.log(all_bar_data[key1]['data'])
+                nr_elements+= Object.keys(all_bar_data[key1]['data'][label1]).length
+                labels_box.push(Object.keys(all_bar_data[key1]['data'][label1]))
+            }catch{
+                nr_elements+= 0
+            }
+
+        })
+
         return {'nr_elements':nr_elements,'labels_box':labels_box}
     }
 
@@ -167,12 +203,19 @@ export default class MultitypeMO extends Component {
     const Display_Charts =({all_axis_max,labels,all_line_data,all_bar_data})=>{
         let all_data=[]
         let offset = gap_between_experments/2+top_offset
-        
+        let offset_lines = 0+top_offset
+        let count_of_labels=0
+        // Line paths should be displayed here
+        let line_path = "M"
+
+        // line_path = line_path.replace("ML", "M")
+        //
+        let col
         labels.map(label1=>{
-            
+            count_of_labels+=1
             // alert(label1) //here we loop through the labels that are to be displayed in the bar chart.
             const {nr_elements,labels_box} = get_number_of_elements(all_bar_data,label1)
-            const {nr_elements:nr_elements_line ,labels_box:labels_box_line} = get_number_of_elements(all_line_data,label1)
+            const {nr_elements:nr_elements_line ,labels_box:labels_box_line} = get_number_of_elements_line(all_line_data,label1)
 
             // console.log(all_line_data)
 
@@ -185,6 +228,8 @@ export default class MultitypeMO extends Component {
             let all_line_vals={}
 
             if(labels_box_line.length>0){
+                
+
                 // alert(labels_box) //Now we loop through each of the donors to get their values
                 // all_bar_backgrounds = extract_values_for_label(all_bar_data,label1,all_bar_backgrounds,all_axis_max)
                 all_line_vals = extract_values_for_label(all_line_data,label1,all_line_vals,all_axis_max)
@@ -200,9 +245,16 @@ export default class MultitypeMO extends Component {
             // console.log(all_line_vals)
             // alert('all_line_vals')
             all_data.push( <Boxes all_bar_backgrounds={all_bar_backgrounds} distancing_between_bar_groups={bar_width} offset={offset} popup={true} extras={label1}/>)
-            all_data.push( <Lines all_bar_backgrounds={all_line_vals} distancing_between_bar_groups={line_centroid} offset={offset} popup={true} extras={label1}/>)
+            const {line_dots,line_path_out,color1} =Lines(all_line_vals,nr_elements_line,offset_lines,true,label1,line_path)
+            col=color1
+            line_path=line_path_out
+            all_data.push(line_dots)
+            // all_data.push( <Lines all_bar_backgrounds={all_line_vals} nr_elements_line={nr_elements_line} offset={offset_lines} popup={true} extras={label1}/>)
             offset+=distancing_between_bar_groups
+            offset_lines+=distancing_between_bar_groups
         })
+        line_path = line_path.replace("ML", "M")
+        all_data.push(<path d={line_path} stroke-width={2} stroke={col} fill="none"/>)
         return <Fragment>{all_data}</Fragment>
     }
 
@@ -238,9 +290,13 @@ export default class MultitypeMO extends Component {
         let all_axis_colors={}
         let all_labels_and_colors={}
         datasets.map(data_type=>{
-            console.log(data_type)
+            // console.log(data_type)
             let axis_id=data_type['xAxisID']
             let label=data_type['label']
+            let agregation_method=data_type['agregation_method']
+            if(agregation_method!=='individual'){
+                label+=` (${agregation_method})`
+            }
             try{
                 all_axis_colors[axis_id].push(data_type['backgroundColor'])
                 all_labels_and_colors[label].push(data_type['backgroundColor'])
@@ -313,16 +369,17 @@ export default class MultitypeMO extends Component {
             
             let divider
 
-            let divide_options =[0.5,1,5,10,20,50,100]
+            let divide_options =[0.5,1,5,10,20,50,100,500,1000,5000,10000]
+            let interval_devision
             for (var i = 0; i < divide_options.length; i++) {
                 divider = divide_options[i]
-                let interval_devision = all_axis_max[key1]/divider
+                interval_devision = all_axis_max[key1]/divider
                 // alert(interval_devision)
-                if (interval_devision > 6 && interval_devision < 15) {
+                if (interval_devision > 4 && interval_devision < 17) {
                     break 
                 }
             }
-
+            // alert(divider)
             // Make axis in either 0.5s 1s 5s or 10s or 100s
             let value_norm_factor = (max_bar_value-side_offset)/max
            
@@ -359,15 +416,13 @@ export default class MultitypeMO extends Component {
         let count=0
         Object.keys(all_labels_and_colors).map(label1=>{
             count+=1
-
             all_visualisations.push(<rect x={side_offset}
                 y={20+count*legend_height}
                 width={legend_width} 
                 height={legend_height-space_between_legends}
             style={{fill: all_labels_and_colors[label1], stroke: "black"}}/>)
-            
-            all_visualisations.push(<foreignObject  x={side_offset+legend_width+5} y={count*legend_height} width="100" height={distancing_between_bar_groups}>
-            <div width="100" height={"10"}><p className={"label_style div_p"} xmlns="http://www.w3.org/1999/xhtml">{label1}</p></div>
+            all_visualisations.push(<foreignObject  x={side_offset+legend_width+5} y={count*legend_height} width="300" height={distancing_between_bar_groups}>
+            <div width="300" height={"10"}><p className={"label_style div_p"} xmlns="http://www.w3.org/1999/xhtml">{label1}</p></div>
         </foreignObject>  
             )
         })
@@ -395,15 +450,20 @@ export default class MultitypeMO extends Component {
         
         return(all_visualisations)
     }
+
     // For each Family lets dedicate a certain pixel size -400 px
     const showPopup = (e,text,unique_id) => {
-        const myicon = document.getElementById(unique_id);
-        const mypopup = document.getElementById(e);
-        mypopup.innerHTML = `<h3>${text}</h3>`
-        const iconPos = myicon.getBoundingClientRect();
-        mypopup.style.left = (iconPos.right - 200) + "px";
-        mypopup.style.top = (window.scrollY + iconPos.top -20) + "px";
-        mypopup.style.display = "block";
+        // console.log('show')
+        setTimeout(() => { 
+            let myicon = document.getElementById(unique_id);
+            let mypopup = document.getElementById(e);
+            mypopup.innerHTML = `<h3>${text}</h3>`
+            let iconPos = myicon.getBoundingClientRect();
+            mypopup.style.left = (iconPos.right - 200) + "px";
+            mypopup.style.top = (window.scrollY + iconPos.top -20) + "px";
+            mypopup.style.display = "block";
+        }, 100);
+
     }
     
     const hidePopup = (e)=> {
