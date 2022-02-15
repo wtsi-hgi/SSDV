@@ -88,7 +88,7 @@ export class CSV_Display extends Component {
             let body = []
             let header = []
             let count = 0
-            let exclude = [1, 2]
+            let exclude = []
             let className1 = 'overflowTableCell'
             this.state.data.map(row1 => {
                 let row_count = 0

@@ -19,9 +19,7 @@ export default class Dropdown extends Component {
             })
         })
     })
-    const change_element =()=>{
-        alert('this')
-    }
+
 
     const Display_Dropdown = ({selection1,id})=>{
 
@@ -100,13 +98,16 @@ export default class Dropdown extends Component {
         })
         aggregation_types = [...new Set(aggregation_types)];
         aggregation_types.map(typ1=>{
+            
+            if (typeof typ1 !== 'undefined'){
             if(typ1===selection1.axis){
                 all_types.push( <option selected="selected" value={typ1}>{typ1}</option>)
                 selection_here.push(typ1)
             }else{
                 all_types.push( <option value={typ1}>{typ1}</option>)
-            }
+            }}
         })
+
         all_types.push( <option value={id}>new..</option>)
         
         let len1=0
@@ -170,7 +171,7 @@ export default class Dropdown extends Component {
         if(nr_entries==count){
             return <Fragment/>
         }else{
-            return(<button style={{height:'40px'}}>-</button>)
+            return(<button id={id} onClick={() => this.props.handleDelete(id)} style={{height:'40px'}}>-</button>)
         }
         
     }

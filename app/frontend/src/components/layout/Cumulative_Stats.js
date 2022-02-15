@@ -9,12 +9,24 @@ export default class Cumulative_Stats extends Component {
   constructor(props) {
       super(props)
       this.divRef = React.createRef()
-      this.state = { display_entries: [
-        {document:'Donor_Report',column:'Median UMIs per cell',type:'line',axis:'1',color:'rgb(175, 92, 192)',agregation_method:'median' },
-        {document:'Donor_Report',column:'Cell types detected',type:'bar',axis:'2',color:'rgb(75, 192, 192)' ,agregation_method:'individual'},
-        {}
-        // {document:'Donor_Report',column:'Genes detected with counts > 0',type:'line',axis:'x3',color:'rgb(75, 2, 192)',agregation_method:'median' },
-      ]};
+      this.state = { 
+        display_entries: [
+        {document:'Donor_Report',column:'Median UMIs per cell',type:'bar',axis:'1',color:'rgb(175, 92, 192)',agregation_method:'individual' },
+        {document:'Donor_Report',column:'Nr UMIS mapped to mitochondrial genes',type:'bar',axis:'3',color:'rgb(155, 122, 122)' ,agregation_method:'individual'},
+        {document:'Donor_Report',column:'Nr cells passes qc',type:'line',axis:'2',color:'rgb(75, 192, 192)' ,agregation_method:'mean'},
+        
+        {},
+      ],
+      colors:[
+        'rgba(175, 92, 192)',
+        'rgba(75, 192, 192)',
+        'rgba(211, 12, 56)',
+        'rgba(215, 2, 6)',
+        'rgba(215,215,0)',
+      ]
+    
+    
+    };
   }
 
 
@@ -23,10 +35,10 @@ export default class Cumulative_Stats extends Component {
       const new_column = event.target.value.split('---')[0]
       let copy_display_entries = [...this.state.display_entries];
       
-      console.log(copy_display_entries[event.target.id-1])
+      // console.log(copy_display_entries[event.target.id-1])
       if(Object.keys(copy_display_entries[event.target.id-1]).length===0){
         // this is when we are adding a nw entry
-        copy_display_entries[event.target.id-1]={document:new_Doc,column:new_column,type:'bar',axis:'1',color:'rgb(15, 2, 192)' ,agregation_method:'individual'}
+        copy_display_entries[event.target.id-1]={document:new_Doc,column:new_column,type:'bar',axis:'1',color:this.state.colors[event.target.id-1] ,agregation_method:'individual'}
         copy_display_entries[event.target.id]={}
       }else{
         copy_display_entries[event.target.id-1].column=new_column
@@ -42,11 +54,21 @@ export default class Cumulative_Stats extends Component {
     this.setState({ display_entries: copy_display_entries });
   };
 
+  handleDelete = (event) => { 
+    // alert(event)
+    // const replacement =event.target.value
+    let copy_display_entries = [...this.state.display_entries];
+    copy_display_entries.splice(event-1, 1);
+    // copy_display_entries[event.target.id-1].agregation_method=replacement
+    this.setState({ display_entries: copy_display_entries });
+  };
+
   handleChangeAxis = (event) => { 
-    alert('axis change')
+    // alert('axis change')
     const replacement =event.target.value
     let copy_display_entries = [...this.state.display_entries];
     copy_display_entries[event.target.id-1].axis=replacement
+
     this.setState({ display_entries: copy_display_entries });
   };
 
@@ -95,6 +117,17 @@ export default class Cumulative_Stats extends Component {
       return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
     };
 
+    const mean =(arr)=>{
+      //Find the sum
+      var sum = 0;
+      for(var i in arr) {
+          sum += arr[i];
+      }
+      //Get the length of the array
+      var numbersCnt = arr.length;
+      //Return the average / mean.
+      return (sum / numbersCnt);
+  }
     const typ1='line'
     const typ2= 'bar'
     const protein_data = this.props.protein_data
@@ -193,6 +226,7 @@ export default class Cumulative_Stats extends Component {
           let data_title=entry1.column
           let data_all_exp1 = {}
           available_for_cummulitive_stats_data.map(exp1=>{
+            try{
             // alert(data_title)
             let data1 = protein_data.dataset['metadata'][exp1][entry1.document][data_title]
             data_all_exp1[exp1]={}
@@ -203,13 +237,19 @@ export default class Cumulative_Stats extends Component {
               data_in_use['median']=median(Object.values(data1))
             }else if(entry1.agregation_method==='individual'){
               data_in_use=data1
+            }else if(entry1.agregation_method==='mean'){
+              data_in_use['mean']=mean(Object.values(data1))
             }
   
             // alert(entry1.agregation_method)
             Object.keys(data_in_use).map(key1=>{
-              data_all_exp1[exp1][`${data_title}-${key1}`]=data_in_use[key1]
+              data_all_exp1[exp1][`${data_title}---${key1}`]=data_in_use[key1]
             })
   
+            }catch{
+              // alert('this dataset is not available for all exp')
+            }
+
   
         })
         
@@ -347,7 +387,7 @@ export default class Cumulative_Stats extends Component {
         return (          <div  className="box" id='multichartJS' style={{marginTop:'40px'}}>
         <h2>This is a cummulitive stats analysis to monitor the outliers</h2>
         <h1 title={description}>Totals Cells passing QC for all selected experiments: {Total_Cells_passing_QC}</h1>
-        <Dropdown handleChange={this.handleChange} handleChangeAxis={this.handleChangeAxis} handleChangeType={this.handleChangeType} handleChangeAggregation={this.handleChangeAggregation} dropdown_selections={this.state.display_entries} metadata={ this.props.protein_data.dataset['metadata']}/>
+        <Dropdown handleChange={this.handleChange} handleDelete={this.handleDelete} handleChangeAxis={this.handleChangeAxis} handleChangeType={this.handleChangeType} handleChangeAggregation={this.handleChangeAggregation} dropdown_selections={this.state.display_entries} metadata={ this.props.protein_data.dataset['metadata']}/>
         <div><MultitypeMO all_labels={available_for_cummulitive_stats_data} datasets={datasets} scales={scales} type='bar' /></div>
         
     </div>)
