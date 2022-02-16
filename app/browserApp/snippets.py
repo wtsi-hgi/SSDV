@@ -31,6 +31,11 @@ def retrieve_files(request):
     # this function takes in the api inputs and filters the domains that the protein contains and retrieves it back to the user.
     # subsequently user will be able to perform susceptibility calculations per domain on fly in the frontend
     # written by M.Ozols
+    try:
+        user =request.environ['UWSGI_USER']
+    except:
+        user ='user'
+
     if request.method == 'POST':
         return Response({"message": "Got some data!", "data": request.data})
     if request.method == 'GET':
@@ -116,7 +121,7 @@ def retrieve_files(request):
         dataset2['other_available_experiments']=Other_projects
         dataset2['all_experiment_data']=dataset
         dataset2['metadata']=metadata
-        
+        dataset2['user']=user
         return Response({"dataset":dataset2})
 
 @api_view(['GET'])
