@@ -22,7 +22,7 @@ export class Navbar extends Component {
                             <li className="nav-item opener mr-3">
                                 <NavLink className="nav-link NavElement" to={`${PREFIX}/Cummulitive_Stats`}
                                     activeStyle={{ fontWeight: 'bold', backgroundColor: '#597FBA', color:'white' }}
-                                    exact>Cummulitive Stats</NavLink>
+                                    exact>Cumulative Stats</NavLink>
                             </li>
                             <li className="nav-item opener mr-3">
                                 <NavLink className="nav-link NavElement" to={`${PREFIX}/info`} 

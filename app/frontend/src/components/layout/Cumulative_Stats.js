@@ -117,6 +117,13 @@ export default class Cumulative_Stats extends Component {
       return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
     };
 
+    const StandardDeviation = (array)=> {
+      const n = array.length
+      const mean = array.reduce((a, b) => a + b) / n
+      return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+    }
+
+
     const mean =(arr)=>{
       //Find the sum
       var sum = 0;
@@ -239,6 +246,8 @@ export default class Cumulative_Stats extends Component {
               data_in_use=data1
             }else if(entry1.agregation_method==='mean'){
               data_in_use['mean']=mean(Object.values(data1))
+            }else if(entry1.agregation_method==='standard deviation'){
+              data_in_use['standard deviation']=StandardDeviation(Object.values(data1))
             }
   
             // alert(entry1.agregation_method)
@@ -385,7 +394,7 @@ export default class Cumulative_Stats extends Component {
     }
     else{
         return (          <div  className="box" id='multichartJS' style={{marginTop:'40px'}}>
-        <h2>This is a cummulitive stats analysis to monitor the outliers</h2>
+        <h2>Here you can browse the cumulative stats displayed in Experiments (fetch and summary tabs).</h2>
         <h1 title={description}>Totals Cells passing QC for all selected experiments: {Total_Cells_passing_QC}</h1>
         <Dropdown handleChange={this.handleChange} handleDelete={this.handleDelete} handleChangeAxis={this.handleChangeAxis} handleChangeType={this.handleChangeType} handleChangeAggregation={this.handleChangeAggregation} dropdown_selections={this.state.display_entries} metadata={ this.props.protein_data.dataset['metadata']}/>
         <div><MultitypeMO all_labels={available_for_cummulitive_stats_data} datasets={datasets} scales={scales} type='bar' /></div>

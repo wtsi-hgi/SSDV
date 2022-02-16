@@ -81,7 +81,7 @@ class App extends Component {
           <Router>
           <Fragment>
               <div id="container">
-                <Header/> 
+                <Header user={this.state.protein_data.dataset.user}/> 
               </div>
               <div style={{float:'right'}}><Project_Selector Change_experiment={this.Change_experiment} protein_data={this.state.protein_data}/></div>
                 <div id={"body_content"} className={"body_content"}>   

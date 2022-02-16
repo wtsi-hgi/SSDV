@@ -24,7 +24,7 @@ export default class MultitypeMO extends Component {
     const distance_between_labels=15
 
     let datasets= this.props.datasets
-    let distancing_between_bar_groups = 200
+    let distancing_between_bar_groups = 400
     const size_of_multi_axis_square=10
     height=distancing_between_bar_groups*labels.length+(distance_between_labels+150)+top_offset
     const Labels =({labels,distancing_between_bar_groups}) =>{
@@ -466,11 +466,26 @@ export default class MultitypeMO extends Component {
             // alert(divider)
             for (var i = 0; i < max+divider; i+=divider) {
                 all_visualisations.push(<line x1={i*value_norm_factor+100} y1={where_to_place_labels+label_offset-3} x2={i*value_norm_factor+100} y2={0+top_offset} strokeOpacity="0.3" stroke={axis_color} />)    
-                
+                let i_to_display=`${i}`
+                if (i>99999){
+                    i_to_display=`${i/100000}*10^5`.replace('1*','')
+                }
+                if (i>999999){
+                    i_to_display=`${i/1000000}*10^6`.replace('1*','')
+                }                 
+                if (i>9999999){
+                    i_to_display=`${i/10000000}*10^7`.replace('1*','')
+                }  
+                if (i>99999999){
+                    i_to_display=`${i/100000000}*10^8`.replace('1*','')
+                }  
+                if (i>999999999){
+                    i_to_display=`${i/1000000000}*10^9`.replace('1*','')
+                }  
                 all_visualisations.push(<line x1={i*value_norm_factor+100} y1={where_to_place_labels+label_offset-3} x2={i*value_norm_factor+100} y2={where_to_place_labels+label_offset+3} stroke={axis_color} />)    
                 all_visualisations.push(
                     <foreignObject  x={i*value_norm_factor+100} y={where_to_place_labels+label_offset-13} width="40" height={'40'}>
-                        <div className={"div_label"}><p style={{color:axis_color}} className={"label_style2"} xmlns="http://www.w3.org/1999/xhtml">{i}</p></div>
+                        <div className={"div_label"}><p style={{color:axis_color}} className={"label_style2"} xmlns="http://www.w3.org/1999/xhtml">{i_to_display}</p></div>
                     </foreignObject>      
                     // <text
                     //           className={""} x={i*value_norm_factor+100}

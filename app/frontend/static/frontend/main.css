@@ -99,6 +99,14 @@ iframe {
 .ib {
   display: inline-block;
 }
+.head_class{
+  background-image: linear-gradient(to right, #9F7FDA , #4965A7);
+  color: whitesmoke;
+  line-height: 1.5;
+  text-align: right;
+  padding-right: 2em;
+}
+
 #head{
   background-image: linear-gradient(to right, #9F7FDA , #4965A7);
   margin: 0em;
