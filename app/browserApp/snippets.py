@@ -74,6 +74,8 @@ def retrieve_files(request):
                         # print(tsv_file)
                         TSV_Name = tsv_file.split('/')[-1].split('.')[0]
                         Data = pd.read_csv(tsv_file,sep='\t',index_col=0)
+                        if(len(Data.columns)==0):
+                            Data = pd.read_csv(tsv_file,sep=',',index_col=0)
                         for column in Data:
                             All_Data_for_stats = Data[column]
                             if (pd.to_numeric(All_Data_for_stats, errors='coerce').notnull().all()):

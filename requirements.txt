@@ -9,6 +9,6 @@ django-cors-headers
 pylint-django
 # gunicorn==20.0.4
 Django==3.2.4
-uWSGI==2.0.19
+uWSGI
 pandas
 # >=2.0.18,<2.1

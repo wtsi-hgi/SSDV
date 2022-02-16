@@ -467,6 +467,12 @@ export default class MultitypeMO extends Component {
             for (var i = 0; i < max+divider; i+=divider) {
                 all_visualisations.push(<line x1={i*value_norm_factor+100} y1={where_to_place_labels+label_offset-3} x2={i*value_norm_factor+100} y2={0+top_offset} strokeOpacity="0.3" stroke={axis_color} />)    
                 let i_to_display=`${i}`
+                if (i>999){
+                    i_to_display=`${i/1000}*10^3`.replace('1*','')
+                }
+                if (i>9999){
+                    i_to_display=`${i/10000}*10^4`.replace('1*','')
+                }
                 if (i>99999){
                     i_to_display=`${i/100000}*10^5`.replace('1*','')
                 }
