@@ -26,18 +26,22 @@ export class CSV_Display extends Component {
         
     }
     componentWillMount() {
+       
         this.getCsvData(this.props.link);
     }
 
     async getCsvData(link) {
         let csvData = await this.fetchCsv(link);
-
+        // console.log(csvData)
+        // alert(csvData)
         Papa.parse(csvData, {
-            complete: this.getData
+            complete: this.getData,
+            delimiter: this.props.seperator,
         });
     }
 
     getData(result) {
+
         this.setState({ data: result.data });
     }
 
@@ -55,6 +59,7 @@ export class CSV_Display extends Component {
 
 
     render() {
+        // alert('here')
         const return_to_table = () => {
             this.setState({ display_type: 'table' })
         }
@@ -90,6 +95,7 @@ export class CSV_Display extends Component {
             let count = 0
             let exclude = []
             let className1 = 'overflowTableCell'
+            console.log(this.state.data)
             this.state.data.map(row1 => {
                 let row_count = 0
                 if (count === 0) {
@@ -111,6 +117,7 @@ export class CSV_Display extends Component {
                     let body_row = []
 
                     row1.map(td1 => {
+                        // alert(td1)
                         if (!exclude.includes(row_count)) {
                             if (row_count == 0) { className1 = 'overflowTableCell1' }else{className1 = 'overflowTableCell' }
 

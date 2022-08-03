@@ -254,7 +254,7 @@ export default class Cumulative_Stats extends Component {
             Object.keys(data_in_use).map(key1=>{
               data_all_exp1[exp1][`${data_title}---${key1}`]=data_in_use[key1]
             })
-  
+
             }catch{
               // alert('this dataset is not available for all exp')
             }

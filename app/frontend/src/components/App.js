@@ -27,31 +27,34 @@ class App extends Component {
       checkBox_values:[]
     }
 
-    changeCheckboxState=(ext1)=>{
-      
-      
+  changeCheckboxState=(ext1)=>{
       let checkBox_values = [...this.state.checkBox_values];
-      
       if(checkBox_values.includes(ext1)){
-        
           const index = checkBox_values.indexOf(ext1);
           if (index > -1) {
               checkBox_values.splice(index, 1); // 2nd parameter means remove one item only
             }
       }else{
-          
           checkBox_values.push(ext1)
       }
-
       this.setState({checkBox_values:checkBox_values})
   }
   
   componentDidMount() {      
-    axios.get(`${PREFIX}/api_scrna/snippets?project=${this.state.project}`)
-        .then(res => {
-          const protein_data = res.data;
-          this.setState({'protein_data':protein_data,'loading':false})
-        })
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    let link1;
+    if(params.project!== undefined){
+      link1 = params.project
+    }else{
+      link1 = this.state.project
+    }
+
+      axios.get(`${PREFIX}/api_scrna/snippets?project=${link1}`)
+      .then(res => {
+        const protein_data = res.data;
+        this.setState({'protein_data':protein_data,'loading':false})
+      })
 
     } 
   
@@ -91,7 +94,7 @@ class App extends Component {
                       changeCheckboxState={this.changeCheckboxState} checkBox_values={this.state.checkBox_values}
                   /></Route>
 
-                  <Route exact path={`${PREFIX}/Cummulitive_Stats`}>
+                  <Route exact path={`${PREFIX}/Cumulative_Stats`}>
                     <Cumulative_Stats loading={this.state.loading} sort={this.state.sort} protein_data={this.state.protein_data} 
                       checkBox_values={this.state.checkBox_values}
                   /></Route>

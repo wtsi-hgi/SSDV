@@ -83,7 +83,10 @@ def retrieve_files(request):
                                 metadata = edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column)
                             else:
                                 # if all not numeric, then replace the , and % and check again.
-                                All_Data_for_stats = All_Data_for_stats.str.replace(',','').replace('%','')
+                                try:
+                                    All_Data_for_stats = All_Data_for_stats.str.replace(',','').replace('%','')
+                                except:
+                                    All_Data_for_stats = All_Data_for_stats
                                 if (pd.to_numeric(All_Data_for_stats, errors='coerce').notnull().all()):
                                     metadata = edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column)
                                 

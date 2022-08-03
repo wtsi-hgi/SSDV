@@ -467,7 +467,7 @@ iframe {
 }
 
 .overflowTableCell{
-  max-width: 100px;
+  min-width: 100px;
   max-height: 100px;
   height: 100px;
   overflow-y: hidden;
@@ -477,7 +477,7 @@ iframe {
 }
 
 .overflowTableCell1{
-  max-width: 100px;
+  min-width: 90px;
   max-height: 100px;
   display:block;
   

@@ -20,7 +20,7 @@ export class Navbar extends Component {
                                     exact>Experiments</NavLink>
                             </li>
                             <li className="nav-item opener mr-3">
-                                <NavLink className="nav-link NavElement" to={`${PREFIX}/Cummulitive_Stats`}
+                                <NavLink className="nav-link NavElement" to={`${PREFIX}/Cumulative_Stats`}
                                     activeStyle={{ fontWeight: 'bold', backgroundColor: '#597FBA', color:'white' }}
                                     exact>Cumulative Stats</NavLink>
                             </li>

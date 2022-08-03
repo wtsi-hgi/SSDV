@@ -157,10 +157,14 @@ export class Visualisation_area extends Component {
     render() {
         const csv_handle = (ext, file_link, file_name, col, bck_col) => {
             // alert(file_link)
-            if (ext === 'tsv') {
+            if (ext === 'tsv' || ext === 'csv' ) {
+                let seperator=','
+                if (ext === 'tsv'){
+                    seperator='\t'
+                }
                 return (
                     <Fragment >
-                        <CSV_Display pipe={this.props.pipe} link={file_link} />
+                        <CSV_Display pipe={this.props.pipe} link={file_link} seperator={seperator}/>
                     </Fragment>
                 )
             } 
