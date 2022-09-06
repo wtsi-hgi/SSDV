@@ -8,7 +8,7 @@ export default class Dropdown extends Component {
     Object.keys(this.props.metadata).map(key1=>{
         let exp1_data = this.props.metadata[key1]
         Object.keys(exp1_data).map(metadata_type1=>{
-            // alert(exp1_data[metadata_type1])
+
             Object.keys(exp1_data[metadata_type1]).map(header=>{
                 try{
                     all_metadata_types[metadata_type1].push(header)
@@ -20,20 +20,22 @@ export default class Dropdown extends Component {
         })
     })
 
-
     const Display_Dropdown = ({selection1,id})=>{
 
         let selection=[]
+       
         const Opt_Group_subentries =({subentries,Data_type})=>{
+            // alert(Data_type)
             let All_subentries =[]
             const unique = [...new Set(subentries)];
-            // alert(selection1)   
+
             unique.map(sub1=>{
-                if(sub1===selection1.column){
-                    All_subentries.push(<option selected="selected" value={sub1}>{sub1}</option>)
-                    selection.push(sub1)
+                // alert(selection1.column)
+                if(`${sub1}--${Data_type}`===`${selection1.column}--${selection1.document}`){
+                    All_subentries.push(<option selected="selected" value={`${sub1}---${Data_type}`}>{Data_type}:{sub1}</option>)
+                    selection.push(`${sub1}--${Data_type}`)
                 }else{
-                    All_subentries.push(<option value={`${sub1}---${Data_type}`}>{sub1}</option>)
+                    All_subentries.push(<option value={`${sub1}---${Data_type}`}>{Data_type}:{sub1}</option>)
                 }  
             })
             if(selection.length===0){

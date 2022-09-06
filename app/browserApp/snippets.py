@@ -9,6 +9,15 @@ from backend.settings import MEDIA_ROOT,MEDIA_URL
 def edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column):
     # print('metadata')
     # metadata={}
+    # print(TSV_Name)
+    if('Donor_Report' in TSV_Name):
+        TSV_Name = 'Donor_Report'
+    if('Tranche_Report' in TSV_Name):
+        TSV_Name = 'Tranche_Report'
+    if('ELGH_Report' in TSV_Name):
+        TSV_Name = 'ELGH_Report'   
+    if('UKBB_Report' in TSV_Name):
+        TSV_Name = 'UKBB_Report'  
     All_Data_for_stats=All_Data_for_stats.to_dict()
     try:
        metadata[Experiment_Name][TSV_Name][column]=All_Data_for_stats
@@ -73,9 +82,27 @@ def retrieve_files(request):
                     for tsv_file in all_tsv_files:
                         # print(tsv_file)
                         TSV_Name = tsv_file.split('/')[-1].split('.')[0]
-                        Data = pd.read_csv(tsv_file,sep='\t',index_col=0)
+                        # Data = pd.read_csv(tsv_file,sep='\t',index_col=0)
+                        # if(len(Data.columns)==0):
+                        #     Data = pd.read_csv(tsv_file,sep=',',index_col=0)
+
+                        Data = pd.read_csv(tsv_file,sep='\t')
                         if(len(Data.columns)==0):
                             Data = pd.read_csv(tsv_file,sep=',',index_col=0)
+
+                        if(len(Data.columns)==0):
+                            Data = pd.read_csv(tsv_file,sep=',')
+                            
+                        if Data.columns.__contains__('Pool_ID.Donor_Id'):
+                            Data = Data.set_index('Pool_ID.Donor_Id')
+                        elif Data.columns.__contains__('Pool ID') or Data.columns.__contains__('Pool id') or Data.columns.__contains__('Pool_ID.Donor_Id'):
+                            try:
+                                Data = Data.set_index('Pool ID')
+                            except:
+                                Data = Data.set_index('Pool id')
+                        else:
+                            Data = Data.set_index(Data.columns[0])
+                        
                         for column in Data:
                             All_Data_for_stats = Data[column]
                             if (pd.to_numeric(All_Data_for_stats, errors='coerce').notnull().all()):

@@ -91,11 +91,17 @@ export class Experiment_level extends Component {
         if (this.props.loading){
             return(<h2>Loading ...</h2>)
         }
+
         else{
+
             return (
             <Fragment>
-                {this.state.sort==='Alphabetical'?<button onClick={()=>this.props.change_state()}>Sort Chronologicaly</button>:<button onClick={()=>this.props.change_state()}>Sort Alphabeticaly</button>}
+                {this.props.sort==='Alphabetical'?<button onClick={()=>this.props.change_state()}>Sort Chronologicaly</button>:<button onClick={()=>this.props.change_state()}>Sort Alphabeticaly</button>}
                 <div className="box">
+                    <h2>Total cells that pass QC: {this.props.combo_data['Total_Cells_passing_QC']}</h2>
+                    <h2>Total UKBB donors:  {this.props.combo_data['UKBB_Donor_DATA_deconvoluted']}/{this.props.combo_data['UKBB_Donor_DATA']}</h2>
+                    <h2>Total ELGH donors:  {this.props.combo_data['ELGH_Donor_DATA_deconvoluted']}/{this.props.combo_data['ELGH_Donor_DATA']}</h2>
+                    
                     <Display_plots/>
                 </div>
             </Fragment>)

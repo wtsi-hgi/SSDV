@@ -32,7 +32,7 @@ export class Multitype extends Component {
                   },
               title: {
                 display: true,
-                text: 'Project Cummulitive Stats',
+                text: 'Project Cumulative Stats',
               },
             },
           };
