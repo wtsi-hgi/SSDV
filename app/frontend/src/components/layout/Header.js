@@ -15,7 +15,7 @@ export class Header extends Component {
                    
                 <a href="https://www.sanger.ac.uk/">
                     <img width="250px" height="auto"  src={Logo} alt="Logo" style={{display:'flex', justifyContent:'center'}}/></a>
-                        <h1 id="website_title">scRNA seq: metadata, stats and visualisations</h1>
+                        <h1 id="website_title">(SSDV) Summary Statistics: Data Visualiser</h1>
                         <Navbar/>
                 </Jumbotron>
 

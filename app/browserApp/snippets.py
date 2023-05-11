@@ -89,7 +89,6 @@ def retrieve_files(request):
         dataset={}
         dataset2={}
         metadata={}
-        
         for experiment in glob(f'{project_to_use}/*/'):
             experiment=experiment[:-1]
             Unix_timestamp_modified =os.path.getmtime(experiment) 
