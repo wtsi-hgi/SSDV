@@ -57,7 +57,8 @@ def retrieve_files(request):
         # serializer.data
         # here we need to add a timer logger that checks whether function was performend in last 6h
         os.system(f'cd {MEDIA_ROOT} && git pull --recurse-submodules')
-        all_projects = glob(f'{MEDIA_ROOT}/*/')
+        all_projects_pre = glob(f'{MEDIA_ROOT}/*/')
+        all_projects=all_projects_pre.copy()
         for proj1 in all_projects:
             proj1_pre= proj1
             proj1=proj1[:-1]
@@ -67,11 +68,12 @@ def retrieve_files(request):
                     # In this case if a user the access management docs containss __all__ then all the users will be able to see the project.
                     continue
                 if not user in set(ACCESS_DEFINITION[0]):
-                    all_projects.remove(proj1_pre)
+                    all_projects_pre.remove(proj1_pre)
                 del ACCESS_DEFINITION
             except:
                 # Here we do not permit user to see the project.
-                all_projects.remove(proj1_pre)
+                all_projects_pre.remove(proj1_pre)
+        all_projects=all_projects_pre
         Other_projects = list(pd.Series(all_projects).str[:-1].str.split('/').str[-1])
         project_selector = request.query_params['project']
         try:
@@ -84,8 +86,8 @@ def retrieve_files(request):
                 project_to_use=(f'{MEDIA_ROOT}/{project_selector}')
                 # this is where we select the specific project user is looking for.
         except:
-            project_to_use='None'
-            project_in_use='None'
+            project_to_use='You do not have access to any projects, please contact HGI or project manager'
+            project_in_use='You do not have access to any projects, please contact HGI or project manager'
         dataset={}
         dataset2={}
         metadata={}
