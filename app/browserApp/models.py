@@ -38,6 +38,17 @@ class fileModel(models.Model):
     QC_metrics_PDFs2 = models.FileField(default=None,blank=True, null=True,upload_to=UploadedConfigPath)
 
 
+class Project_Name(models.Model):
+    project_name = models.CharField(max_length=300)
+    def __str__(self):
+        return '{}'.format(self.project_name)
+
+class Allowed_User(models.Model):
+    project_name = models.ForeignKey(Project_Name,on_delete=models.CASCADE)
+    username = models.CharField(max_length=200)
+    def __str__(self):
+        return '{}'.format(self.project_name)
+
 
 @receiver(models.signals.post_delete, sender=fileModel)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

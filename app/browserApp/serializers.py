@@ -1,12 +1,18 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from browserApp.models import fileModel,All_files
+from browserApp.models import fileModel,All_files,Allowed_User
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Allowed_User
+        fields = ['project_name', 'username']
+
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

@@ -5,6 +5,8 @@ import pandas as pd
 import os
 from glob import glob
 from backend.settings import MEDIA_ROOT,MEDIA_URL
+from browserApp.serializers import AccountSerializer
+from browserApp.models import fileModel,All_files,Allowed_User
 
 def edit_metadata(metadata,All_Data_for_stats,Experiment_Name,TSV_Name,column):
     # print('metadata')
@@ -50,21 +52,46 @@ def retrieve_files(request):
     if request.method == 'GET':
         # here list alll the drectories that are present in the dedicated storage folder
         # we send in the querry param to locate which project we should display to user.
-        all_projects = glob(f'{MEDIA_ROOT}/*')
-        Other_projects = list(pd.Series(all_projects).str.split('/').str[-1])
+        # instance = Allowed_User.objects.get()
+        # serializer = AccountSerializer(instance)
+        # serializer.data
+        # here we need to add a timer logger that checks whether function was performend in last 6h
+        os.system(f'cd {MEDIA_ROOT} && git pull --recurse-submodules')
+        all_projects = glob(f'{MEDIA_ROOT}/*/')
+        for proj1 in all_projects:
+            proj1_pre= proj1
+            proj1=proj1[:-1]
+            try:
+                ACCESS_DEFINITION = pd.read_csv(f'{proj1}/ACCESS.tsv',header=None)
+                if '__all__' in set(ACCESS_DEFINITION[0]):
+                    # In this case if a user the access management docs containss __all__ then all the users will be able to see the project.
+                    continue
+                if not user in set(ACCESS_DEFINITION[0]):
+                    all_projects.remove(proj1_pre)
+                del ACCESS_DEFINITION
+            except:
+                # Here we do not permit user to see the project.
+                all_projects.remove(proj1_pre)
+        Other_projects = list(pd.Series(all_projects).str[:-1].str.split('/').str[-1])
         project_selector = request.query_params['project']
-        if(project_selector=='null'):
-            # this is when user first access the website, it will default to the first project.
-            project_to_use=all_projects[0]
-            project_in_use=project_to_use.split('/')[-1]
-        else:
-            project_in_use=project_selector
-            project_to_use=(f'{MEDIA_ROOT}/{project_selector}')
-            # this is where we select the specific project user is looking for.
+        try:
+            if(project_selector=='null'):
+                # this is when user first access the website, it will default to the first project.
+                project_to_use=all_projects[0][:-1]
+                project_in_use=project_to_use.split('/')[-1]
+            else:
+                project_in_use=project_selector
+                project_to_use=(f'{MEDIA_ROOT}/{project_selector}')
+                # this is where we select the specific project user is looking for.
+        except:
+            project_to_use='None'
+            project_in_use='None'
         dataset={}
         dataset2={}
         metadata={}
-        for experiment in glob(f'{project_to_use}/*'):
+        
+        for experiment in glob(f'{project_to_use}/*/'):
+            experiment=experiment[:-1]
             Unix_timestamp_modified =os.path.getmtime(experiment) 
             Experiment_Name =  (experiment.split('/')[-1])
             dataset[Experiment_Name] = {}
