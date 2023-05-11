@@ -79,7 +79,7 @@ def retrieve_files(request):
         except:
             Other_projects = []
         project_selector = request.query_params['project']
-        all_projects_pre=[]
+        # all_projects_pre=[]
         try:
             all_available_projects=set(pd.DataFrame(all_projects_pre)[0].str.split('/').str[-2])
         except:
