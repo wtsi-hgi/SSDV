@@ -79,14 +79,24 @@ def retrieve_files(request):
         except:
             Other_projects = []
         project_selector = request.query_params['project']
+        all_projects_pre=[]
+        try:
+            all_available_projects=set(pd.DataFrame(all_projects_pre)[0].str.split('/').str[-2])
+        except:
+            all_available_projects=set()
+
         try:
             if(project_selector=='null'):
                 # this is when user first access the website, it will default to the first project.
                 project_to_use=all_projects[0][:-1]
                 project_in_use=project_to_use.split('/')[-1]
             else:
-                project_in_use=project_selector
-                project_to_use=(f'{MEDIA_ROOT}/{project_selector}')
+                if (project_selector in all_available_projects):
+                    project_in_use=project_selector
+                    project_to_use=(f'{MEDIA_ROOT}/{project_selector}')
+                else:
+                    project_to_use=all_projects[0][:-1]
+                    project_in_use=project_to_use.split('/')[-1]
                 # this is where we select the specific project user is looking for.
         except:
             project_to_use='You do not have access to any projects, please contact HGI or project manager'
