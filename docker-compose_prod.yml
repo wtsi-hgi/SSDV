@@ -8,7 +8,7 @@ services:
       - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
     env_file: scrna.env    
   scrna_web2:
-    image: mercury/scrna_web_browser:1.45 #enable to tag the image
+    image: mercury/scrna_web_browser:1.46 #enable to tag the image
     build: 
       context: .
     volumes:
