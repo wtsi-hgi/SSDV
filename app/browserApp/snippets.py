@@ -74,7 +74,10 @@ def retrieve_files(request):
                 # Here we do not permit user to see the project.
                 all_projects_pre.remove(proj1_pre)
         all_projects=all_projects_pre
-        Other_projects = list(pd.Series(all_projects).str[:-1].str.split('/').str[-1])
+        try:
+            Other_projects = list(pd.Series(all_projects).str[:-1].str.split('/').str[-1])
+        except:
+            Other_projects = []
         project_selector = request.query_params['project']
         try:
             if(project_selector=='null'):
