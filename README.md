@@ -7,6 +7,9 @@ Website is written in a dynamic maner i.e its not dependant on hard paths or spe
 For the particular website the higher the number in the branch the more recent version of the website is. Currently version 1.47 operates the https://apps.hgi.sanger.ac.uk/scrna
 
 The interface is developed using React frontend and Django backend which are integrated and wrapped up in a docker container (for Django and React integration please refer to tutorials, which will also provide a [crash course in how to expand the app](https://www.youtube.com/watch?embeds_referring_euri=https%3A%2F%2Fconfluence.sanger.ac.uk%2F&source_ve_path=MTY0OTksMjg2NjQsMTY0NTAz&feature=emb_share&v=Uyei2iDA4Hs&ab_channel=TraversyMedia)): 
+<p align="center">
+  <img src="[https://github.com/wtsi-hgi/yascp/blob/main/assets/images/yascp_workflow.png](https://github.com/wtsi-hgi/scRNA_webBrowser/blob/1.47/illutrator_files/sample.png)" width="70%"/>
+</p>
 
 The app is then deployed using swarm and Nginx. For the purpose of expansion we have also integrated a postgres database that is capable to interact with django and allows content management of the website, however currently app is not utilizing the database for the content management. The code of the website is available https://github.com/wtsi-hgi/scRNA_webBrowser
 
