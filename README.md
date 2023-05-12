@@ -13,7 +13,7 @@ For the particular website the higher the number in the branch the more recent v
 
 The interface is developed using React frontend and Django backend which are integrated and wrapped up in a docker container (for Django and React integration please refer to tutorials, which will also provide a [crash course in how to expand the app](https://www.youtube.com/watch?embeds_referring_euri=https%3A%2F%2Fconfluence.sanger.ac.uk%2F&source_ve_path=MTY0OTksMjg2NjQsMTY0NTAz&feature=emb_share&v=Uyei2iDA4Hs&ab_channel=TraversyMedia)): 
 
-!! When deploying in devcontainer please change your mount directory [here](https://github.com/wtsi-hgi/SSDV/blob/414790362d41de78d40fb9f10e34d8f6ac6c98d7/.devcontainer/docker-compose.yml#LL21C23-L21C23): 
+!! When deploying in devcontainer please change your mount directory [here](https://github.com/wtsi-hgi/SSDV/blob/414790362d41de78d40fb9f10e34d8f6ac6c98d7/.devcontainer/docker-compose.yml#LL21C23-L21C23):, as well as the database mount point path (here)[https://github.com/wtsi-hgi/SSDV/blob/414790362d41de78d40fb9f10e34d8f6ac6c98d7/.devcontainer/docker-compose.yml#LL40C13-L40C13]
 
 The app is then deployed using swarm and Nginx. For the purpose of expansion we have also integrated a postgres database that is capable to interact with django and allows content management of the website, however currently app is not utilizing the database for the content management. The code of the website is available https://github.com/wtsi-hgi/scRNA_webBrowser
 
