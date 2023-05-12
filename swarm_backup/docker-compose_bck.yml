@@ -1,0 +1,165 @@
+  
+version: '3.5'
+
+# Compose has commands for managing the whole lifecycle of your application:
+
+# Start, stop, and rebuild services
+# View the status of running services
+# Stream the log output of running services
+# Run a one-off command on a service
+
+services:
+  backend:
+    image: mercury/openstack_report_backend:theta
+    ports: 
+      - "3000:3000" 
+    secrets:
+      - source: backend_secret
+        target: /app/hgi-openrc.sh
+      - source: tenants_secret
+        target: /app/tenants_conf.yml
+    networks: [app]
+
+  frontend:
+    image: mercury/openstack_report_frontend:theta    
+    depends_on: 
+      - backend
+    command: "npm run serve -- --mode production"
+    networks: [app]
+
+  scrna_db:
+    # database for the scRNA webapp
+    image: postgres:13.2
+    restart: unless-stopped
+    volumes:
+      - /home/ubuntu/scRNA_test_app/scrna_pgdata_folder/data:/var/lib/postgresql/data #change the @scrna_pgdata_folder/data to any route for the permenent data storage. data folder needs to be in here. If not existing, please create prior deployment
+    env_file: scrna.env  
+    networks: [app]
+  
+  scrna_web2:
+    # scRNA application 
+    image: mercury/scrna_web_browser:0.31
+    volumes:
+      - /home/ubuntu/scRNA_test_app/scrna_static_and_media_files:/vol/web  #change the @scrna_static_and_media_files to any route for the permenent data storage. If not existing, please create prior deployment
+    depends_on:
+      - scrna_db
+    env_file: scrna.env
+    ports: 
+        - "3002:8081"  
+    networks: [app]
+
+  weaver:
+    image: mercury/hgi-weaver:1.1.3 
+    secrets:
+      - source: weaver_secret      
+        target: /srv/shiny-server/weaver/config.yml
+      - source: weaver_secret      
+        target: /srv/shiny-server/spaceman/config.yml
+    networks: [app]
+
+  login-page:
+    image: mercury/auth-login-page:1.4
+    ports:
+      - "9000:9000"
+    volumes:
+      - auth_share:/data/
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+    networks: [app]
+
+  nginx-ldap-auth-daemon:
+    image: mercury/nginx-ldap-auth-daemon:1.3
+    ports:
+      - "8888:8888"
+    depends_on:
+      - login-page
+    volumes:
+      - auth_share:/data/
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+    networks: [app]
+
+  gwas-frontend:
+    image: mercury/gwasplots:1.0
+    ports:
+      - "3001:8080"
+    environment:
+      - NODE_ENV=production
+    configs:
+      - source: gwas_whitelist
+        target: /usr/src/app/whitelist.js
+    command: "node server.js"
+    depends_on:
+      - gwas-db
+    networks: [app]
+
+  gwas-db:
+    image: mongo:bionic
+    volumes:
+      - gwasdb:/data/db
+    networks: [app]
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+  nginx:
+    image: nginx 
+    ports: 
+      - "443:443"
+      - "80:8080"
+    depends_on:
+      - gwas-frontend
+      - frontend
+      - backend
+      - weaver
+      - login-page
+      - nginx-ldap-auth-daemon
+      - scrna_web2
+    configs:
+      - source: nginx_config
+        target: /etc/nginx/nginx.conf 
+      - source: ssl_cert
+        target: /etc/ssl/certs/apps_hgi_sanger_ac_uk-cert.pem
+      - source: ssl_key
+        target: /etc/ssl/private/apps_hgi_sanger_ac_uk-key.pem
+    volumes:
+        - /home/ubuntu/scRNA_test_app/scrna_static_and_media_files:/vol/static #needed by scRNA webapp
+
+    networks: [app]
+
+volumes:
+  gwasdb:
+    driver: local
+  auth_share:
+    driver: local
+  postgres-data:
+    driver: local
+
+
+secrets:
+   backend_secret:
+      file: hgi-openrc.sh
+   weaver_secret:
+      file: config.yml    
+   tenants_secret:
+      file: tenants_conf.yml
+
+configs:
+   nginx_config:
+      file: nginx.conf
+   ssl_cert:
+      file: apps_hgi_sanger_ac_uk-cert.pem
+   ssl_key:
+      file: apps_hgi_sanger_ac_uk-key.pem 
+   gwas_whitelist:
+      file: gwas_whitelist.js
+
+networks:
+  app:
+    ipam:
+      driver: default
+      

@@ -1,0 +1,41 @@
+version: "3.3"
+   
+services:
+  scrna_db:
+    image: postgres:13.2
+    restart: unless-stopped
+    volumes:
+      - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
+    env_file: scrna.env    
+  scrna_web2:
+    image: mercury/scrna_web_browser:1.46 #enable to tag the image
+    build: 
+      context: .
+    volumes:
+      - /Users/mo11/work/app_development/static:/vol/web
+     
+    depends_on:
+      - scrna_db
+    env_file: scrna.env
+    ports:
+      - "3002:8081"
+  proxy: # use this block on openstack for nginx. 
+    build:
+      context: ./proxy
+    volumes:
+      - /Users/mo11/work/app_development/static:/vol/static
+    ports:
+      - "80:8080"
+    expose:
+      # - "8081"
+      - '8000'
+    depends_on:
+      - scrna_web2
+
+configs:
+  nginx_config:
+    file: nginx.conf
+  uwsgi_config:
+    file: uwsgi_params
+  nginx_def:
+    file: default.conf

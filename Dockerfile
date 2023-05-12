@@ -1,40 +1,40 @@
-# [Choice] Python version: 3, 3.8, 3.7, 3.6
+# Here we are using multi stage build to get the app work in production,
+# Esentially what this means is that we use a container to build a front end firs and then load the output in a final container.
 
-# FROM nikolaik/python-nodejs:python3.9-nodejs15-slim
 FROM node
 
 WORKDIR /nodebuild
-COPY /frontend/ /nodebuild/frontend/
-RUN cd frontend &&npm i webpack webpack-cli --save-dev && npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev && npm i react react-dom --save-dev
-
-ADD .env /nodebuild
-RUN export $(grep -v '^#' .env | xargs) 
+COPY ./app/frontend/ /nodebuild/frontend/
+ADD scrna.env /nodebuild
+RUN export $(grep -v '^#' scrna.env | xargs) 
 RUN cd frontend &&npm i webpack webpack-cli --save-dev && npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev && npm i react react-dom --save-dev
 RUN cd frontend && npm install
 RUN cd frontend && npm run build
-
+RUN ls -l /nodebuild/frontend
+RUN ls -l /nodebuild/frontend/src
+RUN ls -l /nodebuild/frontend/static/frontend
 
 FROM tiangolo/uwsgi-nginx
-EXPOSE 8081
-ENV PYTHONUNBUFFERED=1
-ENV HOME=/app
-ENV APP_HOME=/app/backend
+ENV PATH="/scripts:${PATH}"
+COPY ./requirements.txt /requirements.txt
 WORKDIR /app
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
-COPY /frontend/ /app/frontend/
-COPY manage.py /app/
-COPY /backend/ /app/backend/
-COPY /browserApp/ /app/browserApp/
-COPY uwsgi.ini /app/
-ENV UWSGI_INI uwsgi.ini
-COPY .env /app/
-RUN export $(grep -v '^#' .env| xargs)
-RUN rm /app/.env
-COPY --from=0 /nodebuild/frontend/static/frontend /app/frontend/static/frontend
-# RUN apt-get update -y && apt-get install nodejs -y
-# RUN cd frontend &&npm i webpack webpack-cli --save-dev && npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev && npm i react react-dom --save-dev
-# RUN cd frontend && npm install
-# RUN cd frontend && npm run build
-RUN python3 manage.py collectstatic --noinput
-# RUN cd frontend && npm i redux react-redux redux-thunk redux-devtools-extension
+RUN pip install -r /requirements.txt
+COPY ./app /app
+# ENV UWSGI_INI uwsgi.ini
+COPY scrna.env /app/
+# RUN rm -r /app/frontend
+COPY ./scripts /scripts
+RUN chmod +x /scripts/*
+
+COPY --from=0 /nodebuild/frontend/static/frontend/main.js /app/frontend/static/frontend/main.js
+COPY --from=0 /nodebuild/frontend/static/frontend/main.js /vol/web/static/frontend/main.js
+
+RUN ls -l /app/frontend/static/frontend/
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/static
+
+RUN chmod -R 755 /vol/web
+RUN ls -l /vol/web/static
+RUN python manage.py collectstatic --noinput
+RUN ls -l /vol/web/static/frontend
+CMD ["entrypoint.sh"]

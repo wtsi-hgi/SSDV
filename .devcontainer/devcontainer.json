@@ -5,7 +5,7 @@
 	"name": "Python 3 & PostgreSQL",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	"workspaceFolder": "/workspace",
+	"workspaceFolder": "/scRNA_webBrowser",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
@@ -36,7 +36,7 @@
 		"python.testing.pytestPath": "/usr/local/py-utils/bin/pytest"
 	},
 
-	// Add the IDs of extensions you want installed when the container is created.
+	// Add the IDs oworkf extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
 		"mtxr.sqltools",
