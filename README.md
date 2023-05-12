@@ -4,7 +4,7 @@ This web app is intended to provide users with a quick and easy way to access th
 
 Website is written in a dynamic maner i.e its not dependant on hard paths or specific folder structures and is capable in visalising 1) Different projects, 2) Different subfolders and 3) Different sub-sub folders, as per example belolow (data types capable in displaying: PDF, xml, html, png, gpg, csv, tsv):
 <p align="center">
-  <img src="[https://github.com/wtsi-hgi/yascp/blob/main/assets/images/yascp_workflow.png](https://github.com/wtsi-hgi/scRNA_webBrowser/blob/1.47/illutrator_files/sample.png)" width="70%"/>
+  <img src="https://github.com/wtsi-hgi/scRNA_webBrowser/blob/1.47/illutrator_files/sample.png" width="70%"/>
 </p>
 For the particular website the higher the number in the branch the more recent version of the website is. Currently version 1.47 operates the https://apps.hgi.sanger.ac.uk/scrna
 
