@@ -6,6 +6,8 @@ Website is written in a dynamic maner i.e its not dependant on hard paths or spe
 <p align="center">
   <img src="https://github.com/wtsi-hgi/scRNA_webBrowser/blob/1.47/illutrator_files/sample.png" width="70%"/>
 </p>
+In this example Conect_Val is a tranche, celltype-assignment = sub-folder, prediction score upap = sub,sub-folder.
+
 For the particular website the higher the number in the branch the more recent version of the website is. Currently version 1.47 operates the https://apps.hgi.sanger.ac.uk/scrna
 
 The interface is developed using React frontend and Django backend which are integrated and wrapped up in a docker container (for Django and React integration please refer to tutorials, which will also provide a [crash course in how to expand the app](https://www.youtube.com/watch?embeds_referring_euri=https%3A%2F%2Fconfluence.sanger.ac.uk%2F&source_ve_path=MTY0OTksMjg2NjQsMTY0NTAz&feature=emb_share&v=Uyei2iDA4Hs&ab_channel=TraversyMedia)): 
