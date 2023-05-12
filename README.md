@@ -30,7 +30,6 @@ For Django deployment we have used [uwsgi](https://uwsgi-docs.readthedocs.io/en/
 
 Since we are deploying multiple apps on a subpaths using swarm additional configurations had to be made to make Django form the paths accordingly.
 
-<<<<<<< HEAD
+
 Originally written by M.Ozols
-=======
->>>>>>> origin/1.47
+
