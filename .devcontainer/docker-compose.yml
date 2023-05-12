@@ -11,7 +11,7 @@ services:
         VARIANT: 3
         # [Choice] Install Node.js
         INSTALL_NODE: "true"
-        NODE_VERSION: "lts/*"
+        NODE_VERSION: "16"
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
         USER_GID: 1000
@@ -37,7 +37,7 @@ services:
     image: postgres:13.2
     restart: unless-stopped
     volumes:
-      - /Users/mo11/work/app_development/pddata/data:/var/lib/postgresql/data
+      - /Users/mo11/work/app_development/pddata/data2:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
