@@ -28,3 +28,5 @@ Template can be used to deploy any other Django, React, Postgres apps in product
 For Django deployment we have used [uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/) since it provides a fast interactions and no latency: 
 
 Since we are deploying multiple apps on a subpaths using swarm additional configurations had to be made to make Django form the paths accordingly.
+
+Originally written by M.Ozols
