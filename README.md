@@ -20,7 +20,7 @@ Template can be used to deploy any other Django, React, Postgres apps in product
 
 # Frontend:
 \
-[Frontend](https://github.com/wtsi-hgi/scRNA_webBrowser/tree/new_interface/app/frontend) in developed a modular design of React class based components. For styling we have used a combination of [Bootstrap](https://getbootstrap.com/docs/) and [Materials UI](https://material-ui.com/). For the routing on the frontend we use Browser BrowserRouter from react-router-dom (https://reactrouter.com/web/api/BrowserRouter). 
+[Frontend](https://github.com/wtsi-hgi/scRNA_webBrowser/tree/new_interface/app/frontend) in developed a modular design of React class based components. For styling we have used a combination of [Bootstrap](https://getbootstrap.com/docs/) and [Materials UI](https://material-ui.com/). For the routing on the frontend we use Browser BrowserRouter from [react-router-dom](https://reactrouter.com/web/api/BrowserRouter). 
 \
 # Backend:
 \
