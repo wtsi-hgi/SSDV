@@ -17,8 +17,8 @@ services:
         USER_GID: 1000
         
     volumes:
-      - ..:/scRNA_webBrowser:cached
-      - /Users/mo11/work/scRNA_webBrowser/scRNA_Data:/vol/web/media  #change the @scrna_static_and_media_files to any route for the permenent data storage. If not existing, please create prior deployment
+      - ..:/SSDV:cached
+      - /Users/mo11/work/SSDV/scRNA_Data:/vol/web/media  #change the @scrna_static_and_media_files to any route for the permenent data storage. If not existing, please create prior deployment
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
